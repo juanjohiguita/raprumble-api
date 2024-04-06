@@ -10,7 +10,12 @@ router.get("/users/:id", getUser);
 
 router.post("/users", createUser);
 
-router.put("/users/:id", updateUserAka);
+// El metodo put permite actualizar todos los datos pero no solo una parte de llos
+// router.put("/users/:id", updateUserAka);
+
+// El metodo patch permite actualizar solo una parte de los datos
+router.patch("/users/:id", updateUserAka);
+
 
 router.delete("/users/:id", deleteUser);
 

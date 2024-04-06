@@ -1,12 +1,8 @@
-import express from "express";
-import usersRoutes from "./routes/users.routes.js";
-import indexRoutes from "./routes/index.routes.js";
+// Arranque de la aplicación
 
+import app from "./app.js";
+import { PORT } from "./config.js";
 
-const app = express();
-app.use(express.json());
+app.listen(PORT);
 
-app.use('/api', usersRoutes, indexRoutes);
-app.listen(5000);
-
-console.log("Server is running on port 5000");
+console.log("Server is running on port ", PORT);
