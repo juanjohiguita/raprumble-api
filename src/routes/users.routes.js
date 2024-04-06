@@ -1,8 +1,10 @@
 import {Router} from 'express';
 import {getUser, getUsers, createUser, deleteUser, updateUserAka} from '../controllers/users.controller.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
-
+import {ping} from '../controllers/index.controller.js';
 
 const router = Router();
+
+router.get("/ping", ping)
 
 router.get("/users", getUsers);
 
