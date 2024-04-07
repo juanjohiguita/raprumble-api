@@ -73,17 +73,24 @@ export const updateUserAllInformation = async (req, res) => {
     const id = req.params.id; 
 
     try {
-        // Verificar si el usuario existe
-        const [rows] = await pool.query("SELECT id, username, password, email, aka, profilePicture FROM users WHERE id = ?", [id]);
-        if(rows.length <= 0) return res.status(404).json({message: "User not found"});
+        // Consultar la base de datos para verificar si el usuario existe        
+        const [rows] = await pool.query("SELECT id, username, password, email, aka, profilePicture FROM users WHERE id = ?", [id], 
+        (error, results) => {
+            if(result.length <= 0) return res.status(404).json({message: "User not found"});
+            if (error) {
+                throw error;
+            }
+            res.status(204).send(`User encontrado with ID: ${id}`);
+        });
         const user = rows[0];
+        // Si el usuario no existe, responder con un mensaje de error
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
         // Actualizar los campos del usuario si se proporcionan en la solicitud
         if (username) {
             user.username = username;
-        }
+        } 
         if (email) {
             user.email = email;
         }
@@ -104,7 +111,7 @@ export const updateUserAllInformation = async (req, res) => {
         // Guardar los cambios en la base de datos
         const [result] = await pool.query("UPDATE users SET username = ?, email = ?, password = ?, aka = ?, profilePicture = ? WHERE id = ?", [user.username, user.email, user.password, user.aka, user.profilePicture, id]);
         // Respuesta exitosa
-        res.status(200).json({ message: 'User updated successfully', user});
+        res.status(200).json({message:"User updated", user});
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error updating user' });
