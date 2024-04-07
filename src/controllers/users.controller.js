@@ -62,9 +62,7 @@ export const createUser = async (req, res) => {
         })
     } catch (error) {
             res.status(500).json({message: "Error in the server"});
-    }
-    
-    
+    }  
 };
 
 export const updateUserAllInformation = async (req, res) => {
@@ -76,11 +74,11 @@ export const updateUserAllInformation = async (req, res) => {
         // Consultar la base de datos para verificar si el usuario existe        
         const [rows] = await pool.query("SELECT id, username, password, email, aka, profilePicture FROM users WHERE id = ?", [id], 
         (error, results) => {
-            if(result.length <= 0) return res.status(404).json({message: "User not found"});
+            if(rows.length <= 0) return res.status(404).json({message: "User not found"});
             if (error) {
                 throw error;
             }
-            res.status(204).send(`User encontrado with ID: ${id}`);
+            res.status(204).send(`User found with ID: ${id}`);
         });
         const user = rows[0];
         // Si el usuario no existe, responder con un mensaje de error
@@ -100,7 +98,6 @@ export const updateUserAllInformation = async (req, res) => {
             // user.password = hashedPassword;
 
             user.password = password;
-
         }
         if (aka) {
             user.aka = aka;
@@ -109,9 +106,18 @@ export const updateUserAllInformation = async (req, res) => {
             user.profilePicture = profilePicture;
         }
         // Guardar los cambios en la base de datos
-        const [result] = await pool.query("UPDATE users SET username = ?, email = ?, password = ?, aka = ?, profilePicture = ? WHERE id = ?", [user.username, user.email, user.password, user.aka, user.profilePicture, id]);
+        const [update] = await pool.query("UPDATE users SET username = ?, email = ?, password = ?, aka = ?, profilePicture = ? WHERE id = ?", [user.username, user.email, user.password, user.aka, user.profilePicture, id]);
+
+        const [result] = await pool.query("SELECT id, username, password, email, aka, profilePicture FROM users WHERE id = ?", [id], 
+        (error, results) => {
+            if(update.length <= 0) return res.status(404).json({message: "User not found"});
+            if (error) {
+                throw error;
+            }
+            res.status(204).send(`User found with ID: ${id}`);
+        });
         // Respuesta exitosa
-        res.status(200).json({message:"User updated", user});
+        res.status(200).json({message:"User updated", result});
     } catch (error) {
         console.error('Error:', error);
         res.status(500).json({ message: 'Error updating user' });
@@ -121,7 +127,7 @@ export const updateUserAllInformation = async (req, res) => {
 
 export const updateUserAka = async (req, res) => {
     const id  = req.params.id;
-    const {username, email, password, aka, profilePicture} = req.body;
+    const {aka} = req.body;
     try {
         const [result] = await pool. query(
             "UPDATE users SET aka = IFNULL(?, aka) WHERE id = ?",
