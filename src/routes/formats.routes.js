@@ -16,9 +16,9 @@ router.post("/formats", createFormat);
 // router.put("/users/:id", updateUserAka);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch("/formats/:id", deleteFormat);
+router.patch("/formats/:id", updateFormatDescription);
 
 
-router.delete("formats/:id", updateFormatDescription);
+router.delete("/formats/:id", deleteFormat);
 
 export default router;

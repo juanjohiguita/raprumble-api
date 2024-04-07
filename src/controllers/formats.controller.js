@@ -76,6 +76,7 @@ export const updateFormatDescription = async (req, res) => {
 
 export const deleteFormat = async (req, res) => {
     const id  = req.params.id;
+    console.log(id);
     try {
         const [rows] = await pool.query("DELETE FROM formats WHERE id = ?", [id]);
         if(rows.affectedRows <= 0) return res.status(404).json({message: "Format not found"});

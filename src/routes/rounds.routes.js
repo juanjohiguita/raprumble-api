@@ -16,9 +16,8 @@ router.post("/rounds", createRound);
 // router.put("/users/:id", updateUserAka);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch("/rounds/:id", deleteRound);
+router.patch("/rounds/:id", updateRoundNumberPatterns);
 
-
-router.delete("/rounds/:id", updateRoundNumberPatterns);
+router.delete("/rounds/:id", deleteRound);
 
 export default router;
