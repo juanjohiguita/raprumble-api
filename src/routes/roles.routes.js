@@ -6,19 +6,19 @@ const router = Router();
 
 router.get("/ping", ping)
 
-router.get("/rols", getRoles);
+router.get("/roles", getRoles);
 
-router.get("/rols/:id", getRole);
+router.get("/roles/:id", getRole);
 
-router.post("/rols", createRole);
+router.post("/roles", createRole);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
 // router.put("/rols/:id", updateRolName);
-
+    
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch("/rols/:id", updateRoleName);
+router.patch("/roles/:id", updateRoleName);
 
 
-router.delete("/rols/:id", deleteRole);
+router.delete("/roles/:id", deleteRole);
 
 export default router;

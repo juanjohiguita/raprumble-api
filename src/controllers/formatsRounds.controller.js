@@ -52,11 +52,11 @@ export const createFormatRound = async (req, res) => {
 };
 export const updateFormatRoundIdRound = async (req, res) => {
     const id  = req.params.id;
-    const {idFormat, idRound} = req.body;
+    const {idRound} = req.body;
     try {
         const [result] = await pool. query(
-            "UPDATE formats_rounds SET name = IFNULL(?, name) WHERE id = ?",
-            [idFormat, idRound,  id],
+            "UPDATE formats_rounds SET idRound = IFNULL(?, idRound) WHERE id = ?",
+            [idRound,  id],
             (error, results) => {
                 if(result.length <= 0) return res.status(404).json({message: "FormatRound not found"});
                 if (error) {
@@ -66,7 +66,7 @@ export const updateFormatRoundIdRound = async (req, res) => {
             }
         );
 
-        const [rows] = await pool.query("SELECT id, idFormat, idRound FROM rols WHERE id = ?", [id]);
+        const [rows] = await pool.query("SELECT id, idFormat, idRound FROM formats_rounds WHERE id = ?", [id]);
         res.json(rows[0]);
     } catch (error) {
         res.status(500).json({message: "Error in the server"});

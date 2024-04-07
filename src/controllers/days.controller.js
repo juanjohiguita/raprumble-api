@@ -54,11 +54,11 @@ export const createDay = async (req, res) => {
 };
 export const updateDayFinish = async (req, res) => {
     const id  = req.params.id;
-    const {idCompetition, numberDay, finish, enable} = req.body;
+    const {finish} = req.body;
     try {
         const [result] = await pool. query(
-            "UPDATE days SET name = IFNULL(?, name) WHERE id = ?",
-            [id, idCompetition, numberDay, finish, enable],
+            "UPDATE days SET finish = IFNULL(?, finish) WHERE id = ?",
+            [finish, id],
             (error, results) => {
                 if(result.length <= 0) return res.status(404).json({message: "Days not found"});
                 if (error) {
