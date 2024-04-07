@@ -13,7 +13,7 @@ router.get("/rounds/:id", getRound);
 router.post("/rounds", createRound);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
-router.put("/users/:id", updateRoundAllInformation);
+router.put("/rounds/:id", updateRoundAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos
 router.patch("/rounds/:id", updateRoundNumberPatterns);

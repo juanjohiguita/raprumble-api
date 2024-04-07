@@ -75,65 +75,35 @@ export const updateRoundNumberPatterns = async (req, res) => {
 };
 
 export const updateRoundAllInformation = async (req, res) => {
-    // Extraer los datos del cuerpo de la solicitud
-    const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 } = req.body;
-    const id = req.params.id; 
+    const { id } = req.params;
+    const { name, numberPatterns } = req.body;
 
-    try {
-        // Consultar la base de datos para verificar si el usuario existe        
-        const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE id = ?", [id], 
-        (error, results) => {
-            if(rows.length <= 0) return res.status(404).json({message: "vote not found"});
-            if (error) {
-                throw error;
-            }
-            res.status(204).send(`vote found with ID: ${id}`);
-        });
-        const vote = rows[0];
-        // Si el usuario no existe, responder con un mensaje de error
-        if (!vote) {
-            return res.status(404).json({ message: 'vote not found' });
-        }
-        // Actualizar los campos del usuario si se proporcionan en la solicitud
-        if (idCompetition) {
-            vote.idCompetition = idCompetition;
-        } 
-        if (idMC2) {
-            vote.idMC2 = idMC2;
-        }
-        if (idMC1) {
-            vote.idMC1 = idMC1;
-        }
-        if (idJudge) {
-            vote.idJudge = idJudge;
-        }
-        if (idDay) {
-            vote.idDay = idDay;
-        }
-        if(scoreMC1){
-            vote.scoreMC1 = scoreMC1;
-        }
-        if(scoreMC2){
-            vote.scoreMC2 = scoreMC2;
-        }
-        // Guardar los cambios en la base de datos
-        const update = await pool.query("UPDATE votes SET idCompetition = ?, idMC2 = ?, idMC1 = ?, idJudge = ?, idDay = ?, scoreMC1 = ?, scoreMC2 = ? WHERE id = ?", [vote.idCompetition, vote.idMC2, vote.idMC1, vote.idJudge, vote.idDay, vote.scoreMC1, vote.scoreMC2, id]);
-        console.log(rows);
-        const [result] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE id = ?", [id], 
-        (error, results) => {
-            if(update.length <= 0) return res.status(404).json({message: "vote not found"});
-            if (error) {
-                throw error;
-            }
-            res.status(204).send(`vote found with ID: ${id}`);
-        });
-        // Respuesta exitosa
-        res.status(200).json({message:"vote updated", result});
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ message: 'Error updating vote' });
+    // Verificar que al menos uno de los campos esté presente en la solicitud
+    if (!name && !numberPatterns) {
+        return res.status(400).json({ message: "Al menos un campo debe ser proporcionado para actualizar" });
     }
 
+    try {
+        // Verificar si la ronda existe
+        const [existingRound] = await pool.query("SELECT * FROM rounds WHERE id = ?", [id]);
+
+        if (existingRound.length === 0) {
+            return res.status(404).json({ message: "Ronda no encontrada" });
+        }
+
+        // Actualizar los campos de la ronda con los valores proporcionados en la solicitud
+        const updateQuery = "UPDATE rounds SET name = ?, numberPatterns = ? WHERE id = ?";
+        await pool.query(updateQuery, [name || existingRound[0].name, numberPatterns || existingRound[0].numberPatterns, id]);
+
+        // Obtener los datos actualizados de la ronda después de la actualización
+        const [updatedRound] = await pool.query("SELECT * FROM rounds WHERE id = ?", [id]);
+
+        // Respuesta exitosa
+        res.status(200).json({ message: "Ronda actualizada", round: updatedRound[0] });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Error al actualizar la ronda" });
+    }
 };
 
 

@@ -74,6 +74,38 @@ export const updateFormatDescription = async (req, res) => {
 
 };
 
+export const updateFormatAllInformation = async (req, res) => {
+    const { id } = req.params;
+    const { name, description } = req.body;
+
+    // Verificar que al menos un campo esté presente en la solicitud
+    if (!name && !description) {
+        return res.status(400).json({ message: "Al menos un campo debe ser proporcionado para actualizar" });
+    }
+
+    try {
+        // Verificar si el rol existe
+        const [existingFormat] = await pool.query("SELECT * FROM formats WHERE id = ?", [id]);
+
+        if (existingFormat.length === 0) {
+            return res.status(404).json({ message: "Format no encontrado" });
+        }
+
+        // Actualizar el nombre del rol
+        const updateQuery = "UPDATE formats SET name = ?, description = ? WHERE id = ?";
+        await pool.query(updateQuery, [name || existingFormat[0].name, description || existingFormat[0].description, id]);
+
+        // Obtener los datos actualizados del rol después de la actualización
+        const [updatedFormat] = await pool.query("SELECT * FROM formats WHERE id = ?", [id]);
+
+        // Respuesta exitosa
+        res.status(200).json({ message: "Format actualizado", format: updatedFormat[0] });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Error al actualizar el Format" });
+    }
+};
+
 export const deleteFormat = async (req, res) => {
     const id  = req.params.id;
     console.log(id);

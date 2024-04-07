@@ -66,64 +66,37 @@ export const createUser = async (req, res) => {
 };
 
 export const updateUserAllInformation = async (req, res) => {
-    // Extraer los datos del cuerpo de la solicitud
+    const { id } = req.params;
     const { username, email, password, aka, profilePicture } = req.body;
-    const id = req.params.id; 
 
-    try {
-        // Consultar la base de datos para verificar si el usuario existe        
-        const [rows] = await pool.query("SELECT id, username, password, email, aka, profilePicture FROM users WHERE id = ?", [id], 
-        (error, results) => {
-            if(rows.length <= 0) return res.status(404).json({message: "User not found"});
-            if (error) {
-                throw error;
-            }
-            res.status(204).send(`User found with ID: ${id}`);
-        });
-        const user = rows[0];
-        // Si el usuario no existe, responder con un mensaje de error
-        if (!user) {
-            return res.status(404).json({ message: 'User not found' });
-        }
-        // Actualizar los campos del usuario si se proporcionan en la solicitud
-        if (username) {
-            user.username = username;
-        } 
-        if (email) {
-            user.email = email;
-        }
-        if (password) {
-            // Hash de la nueva contraseña antes de guardarla
-            // const hashedPassword = await bcrypt.hash(password, 10);
-            // user.password = hashedPassword;
-
-            user.password = password;
-        }
-        if (aka) {
-            user.aka = aka;
-        }
-        if (profilePicture) {
-            user.profilePicture = profilePicture;
-        }
-        // Guardar los cambios en la base de datos
-        const [update] = await pool.query("UPDATE users SET username = ?, email = ?, password = ?, aka = ?, profilePicture = ? WHERE id = ?", [user.username, user.email, user.password, user.aka, user.profilePicture, id]);
-
-        const [result] = await pool.query("SELECT id, username, password, email, aka, profilePicture FROM users WHERE id = ?", [id], 
-        (error, results) => {
-            if(update.length <= 0) return res.status(404).json({message: "User not found"});
-            if (error) {
-                throw error;
-            }
-            res.status(204).send(`User found with ID: ${id}`);
-        });
-        // Respuesta exitosa
-        res.status(200).json({message:"User updated", result});
-    } catch (error) {
-        console.error('Error:', error);
-        res.status(500).json({ message: 'Error updating user' });
+    // Verificar que al menos uno de los campos esté presente en la solicitud
+    if (!username && !email && !password && !aka && !profilePicture) {
+        return res.status(400).json({ message: "Al menos un campo debe ser proporcionado para actualizar" });
     }
 
+    try {
+        // Verificar si el usuario existe
+        const [existingUser] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
+
+        if (existingUser.length === 0) {
+            return res.status(404).json({ message: "Usuario no encontrado" });
+        }
+
+        // Actualizar los campos del usuario con los valores proporcionados en la solicitud
+        const updateQuery = "UPDATE users SET username = ?, email = ?, password = ?, aka = ?, profilePicture = ? WHERE id = ?";
+        await pool.query(updateQuery, [username || existingUser[0].username, email || existingUser[0].email, password || existingUser[0].password, aka || existingUser[0].aka, profilePicture || existingUser[0].profilePicture, id]);
+
+        // Obtener los datos actualizados del usuario después de la actualización
+        const [updatedUser] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
+
+        // Respuesta exitosa
+        res.status(200).json({ message: "Usuario actualizado", user: updatedUser[0] });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Error al actualizar el usuario" });
+    }
 };
+
 
 export const updateUserAka = async (req, res) => {
     const id  = req.params.id;

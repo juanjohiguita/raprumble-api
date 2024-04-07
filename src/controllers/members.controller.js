@@ -78,6 +78,43 @@ export const updateMemberPtb = async (req, res) => {
 
 };
 
+export const updateMemberAllInformation = async (req, res) => {
+    const { id } = req.params;
+    const { idUserMember, idCompetitionMember, idRol, score, ptb } = req.body;
+
+    // Verificar que al menos uno de los campos esté presente en la solicitud
+    if (!idUserMember && !idCompetitionMember && !idRol && !score && !ptb) {
+        return res.status(400).json({ message: "Al menos un campo debe ser proporcionado para actualizar" });
+    }
+
+    try {
+        // Verificar si el miembro existe
+        const [existingMember] = await pool.query("SELECT * FROM members WHERE id = ?", [id]);
+
+        if (existingMember.length === 0) {
+            return res.status(404).json({ message: "Miembro no encontrado" });
+        }
+
+        // Actualizar los campos del miembro con los valores proporcionados en la solicitud
+        const updateQuery = "UPDATE members SET idUserMember = ?, idCompetitionMember = ?, idRol = ?, score = ?, ptb = ? WHERE id = ?";
+        const [updateResult] = await pool.query(updateQuery, [idUserMember || existingMember[0].idUserMember, idCompetitionMember || existingMember[0].idCompetitionMember, idRol || existingMember[0].idRol, score || existingMember[0].score, ptb || existingMember[0].ptb, id]);
+
+        if (updateResult.affectedRows === 0) {
+            return res.status(404).json({ message: "No se pudo actualizar el miembro" });
+        }
+
+        // Obtener los datos actualizados del miembro después de la actualización
+        const [updatedMember] = await pool.query("SELECT * FROM members WHERE id = ?", [id]);
+
+        // Respuesta exitosa
+        res.status(200).json({ message: "Member updated", member: updatedMember[0] });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Error in member update" });
+    }
+};
+
+
 export const deleteMember = async (req, res) => {
     const id  = req.params.id;
     try {

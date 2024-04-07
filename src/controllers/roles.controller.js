@@ -74,6 +74,40 @@ export const updateRoleName = async (req, res) => {
 
 };
 
+export const updateRoleAllInformation = async (req, res) => {
+    const { id } = req.params;
+    const { name } = req.body;
+
+    // Verificar que al menos un campo esté presente en la solicitud
+    if (!name) {
+        return res.status(400).json({ message: "Al menos un campo debe ser proporcionado para actualizar" });
+    }
+
+    try {
+        // Verificar si el rol existe
+        const [existingRole] = await pool.query("SELECT * FROM roles WHERE id = ?", [id]);
+
+        if (existingRole.length === 0) {
+            return res.status(404).json({ message: "Rol no encontrado" });
+        }
+
+        // Actualizar el nombre del rol
+        const updateQuery = "UPDATE roles SET name = ? WHERE id = ?";
+        await pool.query(updateQuery, [name || existingRole[0].name, id]);
+
+        // Obtener los datos actualizados del rol después de la actualización
+        const [updatedRole] = await pool.query("SELECT * FROM roles WHERE id = ?", [id]);
+
+        // Respuesta exitosa
+        res.status(200).json({ message: "Rol actualizado", role: updatedRole[0] });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Error al actualizar el rol" });
+    }
+};
+
+
+
 export const deleteRole = async (req, res) => {
     const id  = req.params.id;
     try {

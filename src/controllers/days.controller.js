@@ -76,6 +76,38 @@ export const updateDayFinish = async (req, res) => {
 
 };
 
+export const updateDayAllInformation = async (req, res) => {
+    const { id } = req.params;
+    const {idCompetition, numberDay, finish, enable } = req.body;
+
+    // Verificar que al menos un campo esté presente en la solicitud
+    if (!idCompetition, numberDay, finish, enable) {
+        return res.status(400).json({ message: "Al menos un campo debe ser proporcionado para actualizar" });
+    }
+
+    try {
+        // Verificar si el rol existe
+        const [existingDay] = await pool.query("SELECT * FROM days WHERE id = ?", [id]);
+
+        if (existingDay.length === 0) {
+            return res.status(404).json({ message: "Day no encontrado" });
+        }
+
+        // Actualizar el nombre del rol
+        const updateQuery = "UPDATE days SET idCompetition = ?, numberDay = ?, finish = ?, enable = ? WHERE id = ?";
+        await pool.query(updateQuery, [idCompetition || existingDay[0].idCompetition, numberDay || existingDay[0].numberDay, finish || existingDay[0].finish, enable || existingDay[0].enable, id]);
+
+        // Obtener los datos actualizados del rol después de la actualización
+        const [updatedDay] = await pool.query("SELECT * FROM days WHERE id = ?", [id]);
+
+        // Respuesta exitosa
+        res.status(200).json({ message: "Day actualizado", Day: updatedDay[0] });
+    } catch (error) {
+        console.error("Error:", error);
+        res.status(500).json({ message: "Error al actualizar el Day" });
+    }
+};
+
 export const deleteDay = async (req, res) => {
     const id  = req.params.id;
     try {
