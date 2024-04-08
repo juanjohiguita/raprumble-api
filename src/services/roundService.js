@@ -57,4 +57,4 @@ class RoundService {
     }
 }
 
-export default new RoundService();
+export default new RoundService;
