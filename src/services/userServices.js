@@ -1,7 +1,7 @@
 import { pool } from "../config/db.js";
 
 export const userServices = {
-    getAllUsers: async () => {
+    getUsers: async () => {
         try {
             const [rows] = await pool.query("SELECT id, username, email, aka, profilePicture FROM users");
             return rows;
@@ -10,7 +10,7 @@ export const userServices = {
         }
     },
 
-    getUserById: async (id) => {
+    getUser: async (id) => {
         try {
             const [rows] = await pool.query("SELECT id, username, email, aka, profilePicture FROM users WHERE id = ?", [id]);
             return rows[0];
@@ -31,7 +31,7 @@ export const userServices = {
         }
     },
 
-    updateUserById: async (id, { username, email, password, aka, profilePicture }) => {
+    updateUser: async (id, { username, email, password, aka, profilePicture }) => {
         try {
             await pool.query(
                 "UPDATE users SET username = ?, email = ?, password = ?, aka = ?, profilePicture = ? WHERE id = ?",
@@ -43,7 +43,7 @@ export const userServices = {
         }
     },
 
-    deleteUserById: async (id) => {
+    deleteUser: async (id) => {
         try {
             const [result] = await pool.query("DELETE FROM users WHERE id = ?", [id]);
             return result.affectedRows > 0; // Devuelve true si se eliminó al menos un usuario, de lo contrario, false
@@ -52,7 +52,7 @@ export const userServices = {
         }
     },
 
-    getUserAllInformationById: async (id) => {
+    getUserAllInformation: async (id) => {
         try {
             const [rows] = await pool.query("SELECT id, username, email, password, aka, profilePicture FROM users WHERE id = ?", [id]);
             if (rows.length <= 0) {
@@ -64,7 +64,7 @@ export const userServices = {
         }
     },
 
-    updateUserAllInformationById: async (id, { username, email, password, aka, profilePicture }) => {
+    updateUserAllInformation: async (id, { username, email, password, aka, profilePicture }) => {
         try {
             const [existingUser] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
             if (existingUser.length === 0) {
