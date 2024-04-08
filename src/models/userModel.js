@@ -1,4 +1,4 @@
-class user {
+class userModel {
     constructor(id, username, email, aka, profilePicture) {
         this.id = id;
         this.username = username;
@@ -8,4 +8,4 @@ class user {
     }
 }
 
-export default user;
+export default userModel;
