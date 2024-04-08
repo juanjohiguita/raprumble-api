@@ -1,6 +1,6 @@
 import { pool } from "../config/db.js";
 
-export const voteServices = {
+export const voteService = {
     getVotes: async () => {
         try {
             const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes");
@@ -75,4 +75,4 @@ export const voteServices = {
 
 };
 
-export default voteServices;
+export default voteService;

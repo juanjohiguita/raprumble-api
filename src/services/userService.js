@@ -1,6 +1,6 @@
 import { pool } from "../config/db.js";
 
-export const usersServices = {
+export const userService = {
     getUsers: async () => {
         try {
             const [rows] = await pool.query("SELECT id, username, email, aka, profilePicture FROM users");
@@ -96,4 +96,4 @@ export const usersServices = {
     }
 };
 
-export default usersServices;
+export default userService;

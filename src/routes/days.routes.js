@@ -1,6 +1,6 @@
 import {Router} from 'express';
-import { getDay, getDays, createDay, updateDayFinish, deleteDay, updateDayAllInformation } from '../controllers/days.controller.js'; 
-import {ping} from '../controllers/index.controller.js';
+import { getDay, getDays, createDay, updateDayFinish, deleteDay, updateDayAllInformation } from '../controllers/daysController.js'; 
+import {ping} from '../controllers/indexController.js';
 const path = 'days';
 
 const router = Router();

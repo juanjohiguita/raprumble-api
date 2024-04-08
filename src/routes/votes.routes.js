@@ -1,6 +1,6 @@
 import {Router} from 'express';
-import {getVote, getVotes, createVote, deleteVote, updateVoteScoreMC1, updateVoteAllInformation} from '../controllers/votes.controller.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
-import {ping} from '../controllers/index.controller.js';
+import {getVote, getVotes, createVote, deleteVote, updateVoteScoreMC1, updateVoteAllInformation} from '../controllers/votesController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
+import {ping} from '../controllers/indexController.js';
 const path = 'votes'
 const router = Router();
 
