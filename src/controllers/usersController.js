@@ -32,18 +32,6 @@ export const createUser = async (req, res) => {
     }
 };
 
-export const updateUser = async (req, res) => {
-    const id = req.params.id;
-    const userData = req.body;
-    try {
-        const success = await userService.updateUser(id, userData);
-        if (!success) return res.status(404).json({ message: "User not found" });
-        res.json({ message: "User updated" });
-    } catch (error) {
-        res.status(500).json({ message: error.message || "Error in the server" });
-    }
-};
-
 export const deleteUser = async (req, res) => {
     const id = req.params.id;
     try {
