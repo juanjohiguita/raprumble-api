@@ -1,5 +1,5 @@
 import { createPool } from "mysql2/promise";
-import {DB_HOST, DB_PORT, DB_NAME,DB_USER, DB_PASSWORD} from "./config.js";
+import {DB_HOST, DB_PORT, DB_NAME,DB_USER, DB_PASSWORD} from "../config.js";
 
 
 export const pool = createPool({

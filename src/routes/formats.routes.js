@@ -2,23 +2,24 @@ import {Router} from 'express';
 import {getFormat, getFormats, createFormat, deleteFormat, updateFormatDescription, updateFormatAllInformation} from '../controllers/formats.controller.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
 import {ping} from '../controllers/index.controller.js';
 
+const path = 'formats'
 const router = Router();
 
-router.get("/ping", ping)
+router.get(`/ping`, ping)
 
-router.get("/formats", getFormats);
+router.get(`/${path}`, getFormats);
 
-router.get("/formats/:id", getFormat);
+router.get(`/${path}/:id`, getFormat);
 
-router.post("/formats", createFormat);
+router.post(`/${path}`, createFormat);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
-router.put("/formats/:id", updateFormatAllInformation);
+router.put(`/${path}/:id`, updateFormatAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch("/formats/:id", updateFormatDescription);
+router.patch(`/${path}/:id`, updateFormatDescription);
 
 
-router.delete("/formats/:id", deleteFormat);
+router.delete(`/${path}/:id`, deleteFormat);
 
 export default router;
