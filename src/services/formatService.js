@@ -3,34 +3,34 @@ import { pool } from "../config/db.js";
 class formatService {
     async getFormats() {
         try {
-            const [rows] = await pool.query("SELECT id, idUserMember, idCompetitionMember, idRole, score, ptb FROM members");
+            const [rows] = await pool.query("SELECT id, name, description FROM formats;");
             return rows;
         } catch (error) {
-            throw new Error("Error fetching members");
+            throw new Error("Error fetching formats");
         }
     }
 
     async getFormat (id) {
         try {
-            const [rows] = await pool.query("SELECT id, idUserMember, idCompetitionMember, idRole, score, ptb FROM members WHERE id = ?", [id]);
+            const [rows] = await pool.query("SELECT id, name, description FROM formats WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
             throw new Error("Error fetching round");
         }
     }
 
-    async createFormat(idUserMember, idCompetitionMember, idRole, score, ptb) {
+    async createFormat(name, description) {
         try {
-            const [result] = await pool.query("INSERT INTO members(idUserMember, idCompetitionMember, idRole, score, ptb) VALUES (?, ?,?,?,?)", [idUserMember, idCompetitionMember, idRole, score, ptb]);
+            const [result] = await pool.query("INSERT INTO formats(name, description) VALUES (?, ?)", [name, description]);
             return result.insertId;
         } catch (error) {
             throw new Error("Error creating round");
         }
     }
 
-    async updateMemberPtb(id, ptb) {
+    async updateFormatDescription(id, description) {
         try {
-            const [result] = await pool.query("UPDATE members SET ptb = IFNULL(?, ptb) WHERE id = ?", [ptb, id]);
+            const [result] = await pool.query("UPDATE formats SET description = IFNULL(?, description) WHERE id = ?", [description, id]);
             console.log(result);
             return result.affectedRows > 0;
         } catch (error) {
@@ -38,18 +38,18 @@ class formatService {
         }
     }
 
-    async updateMemberAllInformation(id, idUserMember, idCompetitionMember, idRole, score, ptb) {
+    async updateFormatAllInformation(id, name, description) {
         try {
-            const [result] = await pool.query("UPDATE members SET idUserMember = ?, idCompetitionMember = ?, idRole = ?, score = ?, ptb = ? WHERE id = ?", [idUserMember, idCompetitionMember, idRole, score, ptb, id]);
+            const [result] = await pool.query("UPDATE formats SET name = ?, description = ? WHERE id = ?", [name, description, id]);
             return result.affectedRows > 0;
         } catch (error) {
             throw new Error("Error updating round");
         }
     }
 
-    async deleteMember(id) {
+    async deleteFormat(id) {
         try {
-            const [result] = await pool.query("DELETE FROM members WHERE id = ?", [id]);
+            const [result] = await pool.query("DELETE FROM formats WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {
             throw new Error("Error deleting round");
@@ -57,4 +57,4 @@ class formatService {
     }
 }
 
-export default formatService;
+export default new formatService;
