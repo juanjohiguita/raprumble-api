@@ -57,4 +57,4 @@ class memberService {
     }
 }
 
-export default memberService;
+export default new memberService;

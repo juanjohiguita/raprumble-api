@@ -57,4 +57,4 @@ class formatRoundService {
     }
 }
 
-export default formatRoundService;
+export default new formatRoundService;
