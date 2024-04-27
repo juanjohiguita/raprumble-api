@@ -1,3 +1,4 @@
+// Metodo para validar los campos requeridos para crear una competencia
 export const validateUpdateFields = (req, res, next) => {
     const { idFormat, name, numberJudges, numberCompetitors, numberDays } = req.body;
 
