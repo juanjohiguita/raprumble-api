@@ -1,6 +1,6 @@
 import { pool } from "../config/db.js";
 
-class RoundService {
+class roundService {
     async getRounds() {
         try {
             const [rows] = await pool.query("SELECT id, name, numberPatterns FROM rounds;");
@@ -57,4 +57,4 @@ class RoundService {
     }
 }
 
-export default new RoundService;
+export default new roundService;
