@@ -55,6 +55,7 @@ export const updateDayAllInformation = async (req, res) => {
     const { idCompetition, numberDay, finish, enable } = req.body;
 
     // Verificar que al menos un campo esté presente en la solicitud
+    // Esto debe ir en el middleware
     if (!idCompetition && !numberDay && !finish && !enable) {
         return res.status(400).json({ message: "Se debe proporcionar al menos un campo para actualizar" });
     }

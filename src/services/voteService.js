@@ -1,81 +1,65 @@
-import { pool } from "../config/db.js"
-import voteModel from "../models/voteModel.js"
+import { pool } from "../config/db.js";
 
-export const voteService = {
-    getVotes: async () => {
+class voteservice {
+    async getVotes() {
         try {
             const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes");
-            return rows.map(row => new voteModel(row.id, row.idCompetition, row.idMC1, row.idMC2, row.idJudge, row.idDay, row.scoreMC1,row.scoreMC2));
+            return rows;
         } catch (error) {
-            throw new Error("Error retrieving votes from the database");
+            throw new Error("Error fetching votes");
         }
-    },
+    }
 
-    getVote: async (id) => {
+    async getVote (id) {
         try {
             const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE id = ?", [id]);
-            const vote = new voteModel(rows[0].id, rows[0].idCompetition, rows[0].idMC1, rows[0].idMC2, rows[0].idJudge, rows[0].idDay, rows[0].scoreMC1,rows[0].scoreMC2);
-            return vote; 
+            return rows[0];
         } catch (error) {
-            throw new Error("Error retrieving vote from the database");
+            throw new Error("Error fetching vote");
         }
-    },
+    }
 
-    createVote: async ({ idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 }) => {
+    async createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2) {
         try {
-            const [result] = await pool.query(
-                "INSERT INTO votes (idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2) VALUES (?, ?, ?, ?, ?,?, ?)",
-                [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2]
-            );
+            const [result] = await pool.query("INSERT INTO votes (idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2) VALUES (?, ?, ?, ?, ?, ?, ?)", [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2]);
             return result.insertId;
         } catch (error) {
             throw new Error("Error creating vote");
         }
-    },
+    }
 
-    updateVoteAllInformation: async (id, { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 }) => {
+    async updateVoteScoreMC1(id, scoreMC1) {
         try {
-            const [existingvote] = await pool.query("SELECT * FROM votes WHERE id = ?", [id]);
-            if (existingvote.length === 0) {
-                throw new Error("vote not found");
-            }
-
-            const updateQuery = "UPDATE votes SET idCompetition = ?, idMC1 = ?, idMC2 = ?, idJudge = ?, idDay = ?, scoreMC1 = ?, scoreMC2 = ? WHERE id = ?";
-            await pool.query(updateQuery, [idCompetition || existingvote[0].idCompetition, idMC1 || existingvote[0].idMC1, idMC2 || existingvote[0].idMC2, idJudge || existingvote[0].idJudge, idDay || existingvote[0].idDay,scoreMC1 || existingvote[0].scoreMC1,scoreMC2 || existingvote[0].scoreMC2, id]);
-
-            const [updatedVote] = await pool.query("SELECT * FROM votes WHERE id = ?", [id]);
-            return new voteModel(updatedVote[0].idCompetition, updatedVote[0].idMC1, updatedVote[0].idMC2, updatedVote[0].idJudge, updatedVote[0].idDay, updatedVote[0].scoreMC1, updatedVote[0].scoreMC2);
-        } catch (error) {
-            throw new Error("Error updating vote information");
-        }
-    },
-
-    updateVoteScoreMC1: async (id, { scoreMC1 }) => {
-        try {
+            // Actualizacion del atributo scoreMC1 mediante un update
             const [result] = await pool.query("UPDATE votes SET scoreMC1 = IFNULL(?, scoreMC1) WHERE id = ?", [scoreMC1, id]);
-            if (result.affectedRows <= 0) {
-                throw new Error("vote not found");
-            }
-
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE id = ?", [id]);
-            const vote = new voteModel(rows[0].idCompetition, rows[0].idMC1, rows[0].idMC2, rows[0].idJudge, rows[0].idDay, rows[0].scoreMC1, rows[0].scoreMC2);
-            return vote; 
+            return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating vote idJudge");
+            throw new Error("Error updating vote");
         }
-    },
+    }
 
-
-    deleteVote: async (id) => {
+    async updateVoteAllInformation(id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 ) {
         try {
+            // Actualizacion de los atributos mediante un update
+            const [result] = await pool.query("UPDATE votes SET idCompetition = ?, idMC1 = ?, idMC2 = ?, idJudge = ?, idDay = ?, scoreMC1 = ?, scoreMC2 = ? WHERE id = ?", [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, id]);
+            return result.affectedRows > 0;
+        } catch (error) {
+            throw new Error("Error updating vote");
+        }
+    }
+
+    async deleteVote(id) {
+        try {
+            const [existingDay] = await pool.query("SELECT * FROM votes WHERE id = ?", [id]);
+            if (existingDay.length === 0) {
+                throw new Error("day not found");
+            }
             const [result] = await pool.query("DELETE FROM votes WHERE id = ?", [id]);
-            return result.affectedRows > 0; // Devuelve true si se eliminó al menos un usuario, de lo contrario, false
+            return result.affectedRows > 0;
         } catch (error) {
             throw new Error("Error deleting vote");
         }
-    },
+    }
+}
 
-
-};
-
-export default voteService;
+export default new voteservice;
