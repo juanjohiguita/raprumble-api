@@ -1,5 +1,4 @@
 import { pool } from "../config/db.js";
-import { deleteCompetition } from "../controllers/competitionsController.js";
 
 class competitionService {
     async getCompetitions() {
