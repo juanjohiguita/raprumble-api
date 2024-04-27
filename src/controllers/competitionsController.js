@@ -1,122 +1,89 @@
-import { pool } from "../config/db.js";
+import competitionService from "../services/competitionService.js";
 
 export const getCompetitions = async (req, res) => {
-    try{
-        const [rows] = await pool.query("SELECT id, idFormat, name, numberJudges, numberCompetitors, numberDays FROM Competitions")
-        if(rows.length <= 0) return res.status(404).json({message: "Competition not found"});
-        res.json(rows);
+    try {
+        const competitions = await competitionService.getCompetitions();
+        if (competitions.length <= 0) {
+            return res.status(404).json({ message: "Competiciones no encontradas" });
+        }
+        res.json(competitions);
     } catch (error) {
-        res.status(500).json({message: "Error in the server"});
-    } 
+        res.status(500).json({ message: error.message || "Error en el servidor" });
+    }
 };
 
 export const getCompetition = async (req, res) => {
-    const id  = req.params.id;
+    const id = req.params.id;
     try {
-        const [rows] = await pool.query("SELECT id, idFormat, name, numberJudges, numberCompetitors, numberDays FROM competitions WHERE id = ?", [id], (error, rows) => {
-        res.send(rows);
-        });
-        if(rows.length <= 0) return res.status(404).json({message: "Competition not found"});
-        res.json(rows[0]);
+        const competition = await competitionService.getCompetition(id);
+        if (!competition) {
+            return res.status(404).json({ message: "Competición no encontrado" });
+        }
+        res.json(competition);
     } catch (error) {
-        res.status(500).json({message: "Error in the server"});
+        res.status(500).json({ message: error.message || "Error en el servidor" });
     }
 };
 
 export const createCompetition = async (req, res) => {
-    const {idFormat, name, numberJudges, numberCompetitors, numberDays} = req.body;
+    const { idFormat, name, numberJudges, numberCompetitors, numberDays } = req.body;
     try {
-        // Validaciones a los datos
-
-        // Consulta a la base de datos
-        const [rows] = await pool.query(
-        "INSERT INTO competitions (idFormat, name, numberJudges, numberCompetitors, numberDays) VALUES (?, ?, ?, ?, ?)",
-        [idFormat, name, numberJudges, numberCompetitors, numberDays],
-            (error, results) => {
-                if (error) {
-                    throw error;
-                }
-                res.status(204).send(`Competition added with ID: ${results.insertId}`);
-            }
-        );
-        res.send({
-            id: rows.insertId,
-            idFormat,
-            name,
-            numberJudges,
-            numberCompetitors,
-            numberDays
-        })
+        const competitionId = await competitionService.createCompetition(idFormat, name, numberJudges, numberCompetitors, numberDays);
+        res.status(201).json({ message: "Competición creada", competitionId });
     } catch (error) {
-            res.status(500).json({message: "Error in the server"});
+        res.status(500).json({ message: error.message || "Error en el servidor" });
     }
-    
-    
 };
 
 export const updateCompetitionName = async (req, res) => {
-    const id  = req.params.id;
-    const {idFormat, name, numberJudges, numberCompetitors, numberDays} = req.body;
+    const id = req.params.id;
+    const  {name}  = req.body;
     try {
-        const [result] = await pool. query(
-            "UPDATE competitions SET name = IFNULL(?, name) WHERE id = ?",
-            [name,  id],
-            (error, results) => {
-                if(result.length <= 0) return res.status(404).json({message: "Competition not found"});
-                if (error) {
-                    throw error;
-                }
-                res.status(204).send(`Competition modified with ID: ${id}`);
-            }
-        );
-
-        const [rows] = await pool.query("SELECT id, name, name, numberJudges, numberCompetitors, numberDays  FROM competitions WHERE id = ?", [id]);
-        res.json(rows[0]);
+        // Llamada al servicio para actualizar el nombre de la competicion
+        const success = await competitionService.updateCompetitionName(id, name);
+        // Si no se ha podido actualizar la competicion, se devuelve un error
+        if (!success) {
+            return res.status(404).json({ message: "Competición no encontrado" });
+        }
+        // Si se ha podido actualizar la competicion, se devuelve un mensaje de exito y la competicion actualizada
+        const updatedcompetition = await competitionService.getCompetition(id);
+        return res.status(200).json({ message: `Competición modificada con ID: ${id}`, updatedcompetition });
     } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ message: "Error in the server" });
+        res.status(500).json({ message: error.message || "Error en el servidor" });
     }
 };
 
 export const updateCompetitionAllInformation = async (req, res) => {
     const { id } = req.params;
-    const {idFormat, name, numberJudges, numberCompetitors, numberDays } = req.body;
+    const { idFormat, name, numberJudges, numberCompetitors, numberDays } = req.body;
 
     // Verificar que al menos un campo esté presente en la solicitud
+    // Esto debe ir en el middleware
     if (!idFormat && !name && !numberJudges && !numberCompetitors && !numberDays) {
-        return res.status(400).json({ message: "Al menos un campo debe ser proporcionado para actualizar" });
+        return res.status(400).json({ message: "Se debe proporcionar al menos un campo para actualizar" });
     }
 
     try {
-        // Verificar si el rol existe
-        const [existingCompetition] = await pool.query("SELECT * FROM competitions WHERE id = ?", [id]);
-
-        if (existingCompetition.length === 0) {
-            return res.status(404).json({ message: "Competition no encontrado" });
+        const success = await competitionService.updateCompetitionAllInformation(id, idFormat, name, numberJudges, numberCompetitors, numberDays);
+        if (!success) {
+            return res.status(404).json({ message: "Competición no encontrado" });
         }
-        // Actualizar el nombre del rol
-        const updateQuery = "UPDATE competitions SET idFormat = ?, name = ?, numberJudges = ?, numberCompetitors = ?, numberDays = ? WHERE id = ?";
-        await pool.query(updateQuery, [idFormat || existingCompetition[0].idFormat, name || existingCompetition[0].name, numberJudges || existingCompetition[0].numberJudges, numberCompetitors || existingCompetition[0].numberCompetitors, numberDays || existingCompetition[0].numberDays, id]);
-
-        // Obtener los datos actualizados del rol después de la actualización
-        const [updatedCompetition] = await pool.query("SELECT * FROM competitions WHERE id = ?", [id]);
-
-        // Respuesta exitosa
-        res.status(200).json({ message: "Competition actualizado", Competition: updatedCompetition[0] });
+        const updatedcompetition = await competitionService.getCompetition(id);
+        return res.status(200).json({ message: `Competición modificado con ID: ${id}`, updatedcompetition });
     } catch (error) {
-        console.error("Error:", error);
-        res.status(500).json({ message: "Error al actualizar el Competition" });
+        res.status(500).json({ message: error.message || "Error en el servidor" });
     }
 };
 
-
 export const deleteCompetition = async (req, res) => {
-    const id  = req.params.id;
+    const id = req.params.id;
     try {
-        const [rows] = await pool.query("DELETE FROM competitions WHERE id = ?", [id]);
-        if(rows.affectedRows <= 0) return res.status(404).json({message: "Competition not found"});
-        res.json({message: "Competition deleted"});
+        const success = await competitionService.deleteCompetition(id);
+        if (!success) {
+            return res.status(404).json({ message: "Competición no encontrado" });
+        }
+        res.json({ message: "Competición eliminada" });
     } catch (error) {
-        res.status(500).json({message: "Error in the server"});
+        res.status(500).json({ message: error.message || "Error en el servidor" });
     }
 };
