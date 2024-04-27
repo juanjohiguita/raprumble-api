@@ -53,27 +53,23 @@ export const updateCompetitionName = async (req, res) => {
     }
 };
 
+
 export const updateCompetitionAllInformation = async (req, res) => {
     const { id } = req.params;
     const { idFormat, name, numberJudges, numberCompetitors, numberDays } = req.body;
 
-    // Verificar que al menos un campo esté presente en la solicitud
-    // Esto debe ir en el middleware
-    if (!idFormat && !name && !numberJudges && !numberCompetitors && !numberDays) {
-        return res.status(400).json({ message: "Se debe proporcionar al menos un campo para actualizar" });
-    }
-
     try {
         const success = await competitionService.updateCompetitionAllInformation(id, idFormat, name, numberJudges, numberCompetitors, numberDays);
         if (!success) {
-            return res.status(404).json({ message: "Competición no encontrado" });
+            return res.status(404).json({ message: "Competición no encontrada" });
         }
         const updatedcompetition = await competitionService.getCompetition(id);
-        return res.status(200).json({ message: `Competición modificado con ID: ${id}`, updatedcompetition });
+        return res.status(200).json({ message: `Competición modificada con ID: ${id}`, updatedcompetition });
     } catch (error) {
         res.status(500).json({ message: error.message || "Error en el servidor" });
     }
 };
+
 
 export const deleteCompetition = async (req, res) => {
     const id = req.params.id;
