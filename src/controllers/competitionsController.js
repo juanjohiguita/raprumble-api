@@ -25,6 +25,19 @@ export const getCompetition = async (req, res) => {
     }
 };
 
+export const getCompetitionMembersAkaAndScore = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const competition = await competitionService.getCompetitionMembersAkaAndScore(id);
+        if (!competition) {
+            return res.status(404).json({ message: "Competición no encontrado" });
+        }
+        res.json(competition);
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error en el servidor" });
+    }
+};
+
 export const createCompetition = async (req, res) => {
     const { idFormat, name, numberJudges, numberCompetitors, numberDays } = req.body;
     try {
