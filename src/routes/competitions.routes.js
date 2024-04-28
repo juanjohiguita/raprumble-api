@@ -9,9 +9,13 @@ router.get(`/ping`, ping)
 
 router.get(`/${path}`, getCompetitions);
 
-router.get(`/${path}/:id`, getCompetition);
+router.get(`/${path}/:id`, 
+CompetitionsMiddleware.competitionExists,
+getCompetition);
 
-router.get(`/${path}/:id/members`, getCompetitionMembersAkaAndScore);
+router.get(`/${path}/:id/members`, 
+CompetitionsMiddleware.competitionExists,   
+getCompetitionMembersAkaAndScore);
 
 router.post(`/${path}`, createCompetition);
 
@@ -28,6 +32,8 @@ CompetitionsMiddleware.validateCompetitionUpdateFields,
 updateCompetitionName);
 
 
-router.delete(`/${path}/:id`, deleteCompetition);
+router.delete(`/${path}/:id`, 
+CompetitionsMiddleware.competitionExists,
+deleteCompetition);
 
 export default router;

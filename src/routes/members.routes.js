@@ -10,7 +10,9 @@ router.get(`/ping`, ping)
 
 router.get(`/${path}`, getMembers);
 
-router.get(`/${path}/:id`, getMember);
+router.get(`/${path}/:id`, 
+MembersMiddleware.memberExists,
+getMember);
 
 router.post(`/${path}`, createMember);
 
@@ -27,6 +29,8 @@ MembersMiddleware.validateMemberUpdateFields,
 updateMemberPtb);
 
 
-router.delete(`/${path}/:id`, deleteMember);
+router.delete(`/${path}/:id`, 
+MembersMiddleware.memberExists,
+deleteMember);
 
 export default router;

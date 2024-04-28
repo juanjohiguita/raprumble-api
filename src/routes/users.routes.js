@@ -9,7 +9,9 @@ router.get(`/${path}/ping`, ping)
 
 router.get(`/${path}`, getUsers);
 
-router.get(`/${path}/:id`, getUser);
+router.get(`/${path}/:id`, 
+UsersMiddleware.userExists,
+getUser);
 
 router.post(`/${path}`, createUser);
 
@@ -26,6 +28,8 @@ UsersMiddleware.validateUserUpdateFields,
 updateUserAka);
 
 
-router.delete(`/${path}/:id`, deleteUser);
+router.delete(`/${path}/:id`, 
+UsersMiddleware.userExists,
+deleteUser);
 
 export default router;

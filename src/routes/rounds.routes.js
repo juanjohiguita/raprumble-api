@@ -10,7 +10,9 @@ router.get("/ping", ping)
 
 router.get(`/${path}`, getRounds);
 
-router.get(`/${path}/:id`, getRound);
+router.get(`/${path}/:id`, 
+RoundsMiddleware.roundExists,
+getRound);
 
 router.post(`/${path}`, createRound);
 
@@ -26,6 +28,8 @@ RoundsMiddleware.roundExists,
 RoundsMiddleware.validateRoundUpdateFields,
 updateRoundNumberPatterns);
 
-router.delete(`/${path}/:id`, deleteRound);
+router.delete(`/${path}/:id`, 
+RoundsMiddleware.roundExists,
+deleteRound);
 
 export default router;

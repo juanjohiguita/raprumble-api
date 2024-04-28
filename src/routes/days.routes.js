@@ -10,7 +10,9 @@ router.get(`/ping`, ping)
 
 router.get(`/${path}`, getDays);
 
-router.get(`/${path}/:id`, getDay);
+router.get(`/${path}/:id`, 
+DaysMiddleware.dayExists,
+getDay);
 
 router.post(`/${path}`, createDay);
 
@@ -27,6 +29,8 @@ DaysMiddleware.validateDayUpdateFields,
 updateDayFinish);
 
 
-router.delete(`/${path}/:id`, deleteDay);
+router.delete(`/${path}/:id`, 
+DaysMiddleware.dayExists,
+deleteDay);
 
 export default router;

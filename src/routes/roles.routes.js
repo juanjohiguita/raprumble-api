@@ -11,7 +11,9 @@ router.get(`/ping`, ping)
 
 router.get(`/${path}`, getRoles);
 
-router.get(`/${path}/:id`, getRole);
+router.get(`/${path}/:id`, 
+RolesMiddleware.roleExists,
+getRole);
 
 router.post(`/${path}`, createRole);
 
@@ -28,6 +30,8 @@ RolesMiddleware.validateRoleUpdateFields,
 updateRoleType);
 
 
-router.delete(`/${path}/:id`, deleteRole);
+router.delete(`/${path}/:id`, 
+RolesMiddleware.roleExists,
+deleteRole);
 
 export default router;

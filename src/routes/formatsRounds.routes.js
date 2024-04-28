@@ -10,7 +10,9 @@ router.get(`/ping`, ping)
 
 router.get(`/${path}`, getFormatsRounds);
 
-router.get(`/${path}/:id`, getFormatRound);   
+router.get(`/${path}/:id`, 
+FormatsRoundsMiddleware.formatRoundExists,
+getFormatRound);   
 
 router.post(`/${path}`, createFormatRound);
 
@@ -27,6 +29,8 @@ FormatsRoundsMiddleware.validateFormatRoundUpdateFields,
 updateFormatRoundIdRound);
 
 
-router.delete(`/${path}/:id`, deleteFormatRound);
+router.delete(`/${path}/:id`, 
+FormatsRoundsMiddleware.formatRoundExists,
+deleteFormatRound);
 
 export default router;

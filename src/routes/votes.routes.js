@@ -9,7 +9,9 @@ router.get("/ping", ping)
 
 router.get(`/${path}`, getVotes);
 
-router.get(`/${path}/:id`, getVote);
+router.get(`/${path}/:id`, 
+VotesMiddleware.voteExists,
+getVote);
 
 router.post(`/${path}`, createVote);
 
@@ -26,6 +28,8 @@ VotesMiddleware.validateVoteUpdateFields,
 updateVoteScoreMC1);
 
 
-router.delete(`/${path}/:id`, deleteVote);
+router.delete(`/${path}/:id`, 
+VotesMiddleware.voteExists,
+deleteVote);
 
 export default router;
