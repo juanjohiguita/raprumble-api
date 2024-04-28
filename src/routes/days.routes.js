@@ -16,12 +16,15 @@ router.post(`/${path}`, createDay);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
 router.put(`/${path}/:id`, 
-DaysMiddleware.validateDayUpdateFields , 
-DaysMiddleware.dayExists, 
+DaysMiddleware.dayExists , 
+DaysMiddleware.validateDayAllUpdateFields, 
 updateDayAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch(`/${path}/:id`, updateDayFinish);
+router.patch(`/${path}/:id`, 
+DaysMiddleware.dayExists,
+DaysMiddleware.validateDayUpdateFields,
+updateDayFinish);
 
 
 router.delete(`/${path}/:id`, deleteDay);

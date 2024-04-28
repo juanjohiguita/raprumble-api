@@ -15,12 +15,15 @@ router.post(`/${path}`, createCompetition);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
 router.put(`/${path}/:id`, 
-CompetitionsMiddleware.validateCompetitionUpdateFields, 
 CompetitionsMiddleware.competitionExists, 
+CompetitionsMiddleware.validateCompetitionAllUpdateFields, 
 updateCompetitionAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch(`/${path}/:id`, updateCompetitionName);
+router.patch(`/${path}/:id`,
+CompetitionsMiddleware.competitionExists,
+CompetitionsMiddleware.validateCompetitionUpdateFields,
+updateCompetitionName);
 
 
 router.delete(`/${path}/:id`, deleteCompetition);

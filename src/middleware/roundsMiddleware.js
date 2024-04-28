@@ -15,6 +15,14 @@ class RoundsMiddleware {
         }
     }
 
+    validateRoundAllUpdateFields(req, res, next) {
+        const { name, numberPatterns } = req.body;
+        if (!name || !numberPatterns) {
+            return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
+        }
+        next();
+    }
+
     validateRoundUpdateFields(req, res, next) {
         const { name, numberPatterns } = req.body;
         if (!name && !numberPatterns) {
@@ -22,6 +30,7 @@ class RoundsMiddleware {
         }
         next();
     }
+
 }
 
 export default new RoundsMiddleware();

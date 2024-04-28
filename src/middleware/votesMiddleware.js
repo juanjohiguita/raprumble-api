@@ -15,6 +15,14 @@ class VotesMiddleware {
         }
     }
 
+    validateVoteAllUpdateFields(req, res, next) {
+        const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 } = req.body;
+        if (!idCompetition || !idMC1 || !idMC2 || !idJudge || !idDay || !scoreMC1 || !scoreMC2) {
+            return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar la votación" });
+        }
+        next();
+    }
+
     validateVoteUpdateFields(req, res, next) {
         const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 } = req.body;
         if (!idCompetition && !idMC1 && !idMC2 && !idJudge && !idDay && !scoreMC1 && !scoreMC2) {

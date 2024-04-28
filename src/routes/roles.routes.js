@@ -17,12 +17,15 @@ router.post(`/${path}`, createRole);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
 router.put(`/${path}/:id`, 
-RolesMiddleware.validateRoleUpdateFields ,
-RolesMiddleware.roleExists,
+RolesMiddleware.roleExists ,
+RolesMiddleware.validateRoleAllUpdateFields,
 updateRoleAllInformation);
     
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch(`/${path}/:id`, updateRoleType);
+router.patch(`/${path}/:id`, 
+RolesMiddleware.roleExists,
+RolesMiddleware.validateRoleUpdateFields,
+updateRoleType);
 
 
 router.delete(`/${path}/:id`, deleteRole);

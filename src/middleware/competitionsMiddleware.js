@@ -22,6 +22,14 @@ class CompetitionsMiddleware {
         }
         next();
     }
+
+    validateCompetitionAllUpdateFields(req, res, next) {
+        const { idFormat, name, numberJudges, numberCompetitors, numberDays } = req.body;
+        if (!idFormat || !name || !numberJudges || !numberCompetitors || !numberDays) {
+            return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
+        }
+        next();
+    }
 }
 
 export default new CompetitionsMiddleware();

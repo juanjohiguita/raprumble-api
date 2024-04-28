@@ -8,7 +8,7 @@ class DaysMiddleware {
         try {
             const day = await dayService.getDay(id);
             if (!day) {
-                return res.status(404).json({ message: "El día que intentas consultar no existe" });
+                return res.status(404).json({ message: "La fecha que intentas consultar no existe" });
             }
             req.day = day;
             next();
@@ -21,6 +21,14 @@ class DaysMiddleware {
         const { idCompetition, numberDay, finish, enable } = req.body;
         if (!idCompetition && !numberDay && !finish && !enable) {
             return res.status(400).json({ message: "Se debe proporcionar al menos un campo para actualizar" });
+        }
+        next();
+    }
+
+    validateDayAllUpdateFields(req, res, next) {
+        const { idCompetition, numberDay, finish, enable } = req.body;
+        if (!idCompetition|| !numberDay || !finish || !enable) {
+            return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
         }
         next();
     }

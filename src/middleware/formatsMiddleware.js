@@ -15,6 +15,14 @@ class FormatsMiddleware {
         }
     }
 
+    validateFormatAllUpdateFields(req, res, next) {
+        const { name, description } = req.body;
+        if (!name || !description) {
+            return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
+        }
+        next();
+    }
+
     validateFormatUpdateFields(req, res, next) {
         const { name, description } = req.body;
         if (!name && !description) {

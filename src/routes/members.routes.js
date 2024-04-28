@@ -16,12 +16,15 @@ router.post(`/${path}`, createMember);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
 router.put(`/${path}/:id`, 
-MembersMiddleware.validateMemberUpdateFields ,
 MembersMiddleware.memberExists,
+MembersMiddleware.validateMemberAllUpdateFields,
 updateMemberAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch(`/${path}/:id`, updateMemberPtb);
+router.patch(`/${path}/:id`, 
+MembersMiddleware.memberExists,
+MembersMiddleware.validateMemberUpdateFields,
+updateMemberPtb);
 
 
 router.delete(`/${path}/:id`, deleteMember);

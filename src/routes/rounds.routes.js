@@ -16,12 +16,15 @@ router.post(`/${path}`, createRound);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
 router.put(`/${path}/:id`, 
-RoundsMiddleware.validateRoundUpdateFields ,
-RoundsMiddleware.roundExists,
+RoundsMiddleware.roundExists ,
+RoundsMiddleware.validateRoundAllUpdateFields,
 updateRoundAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch(`/${path}/:id`, updateRoundNumberPatterns);
+router.patch(`/${path}/:id`, 
+RoundsMiddleware.roundExists,
+RoundsMiddleware.validateRoundUpdateFields,
+updateRoundNumberPatterns);
 
 router.delete(`/${path}/:id`, deleteRound);
 

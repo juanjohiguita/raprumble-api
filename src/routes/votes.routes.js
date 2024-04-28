@@ -15,13 +15,15 @@ router.post(`/${path}`, createVote);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
 router.put(`/${path}/:id`, 
-VotesMiddleware.validateVoteUpdateFields ,
-VotesMiddleware.voteExists,
+VotesMiddleware.voteExists ,
+VotesMiddleware.validateVoteAllUpdateFields,
 updateVoteAllInformation);
-//);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch(`/${path}/:id`, updateVoteScoreMC1);
+router.patch(`/${path}/:id`, 
+VotesMiddleware.voteExists,
+VotesMiddleware.validateVoteUpdateFields,
+updateVoteScoreMC1);
 
 
 router.delete(`/${path}/:id`, deleteVote);

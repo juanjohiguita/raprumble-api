@@ -15,6 +15,15 @@ class MembersMiddleware {
         }
     }
 
+    validateMemberAllUpdateFields(req, res, next) {
+        const { idUserMember, idCompetitionMember, idRole, score, ptb } = req.body;
+        // se debe proporcionar todos los campos para actualizar
+        if (!idUserMember || !idCompetitionMember || !idRole || !score || !ptb) {
+            return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
+        }
+        next();
+    }
+
     validateMemberUpdateFields(req, res, next) {
         const { idUserMember, idCompetitionMember, idRole, score, ptb } = req.body;
         // Se debe proporcionar al menos un campo para actualizar

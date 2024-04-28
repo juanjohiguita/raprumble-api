@@ -15,6 +15,14 @@ class UsersMiddleware {
         }
     }
 
+    validateUserAllUpdateFields(req, res, next) {
+        const { username, password, email, aka, profilePicture } = req.body;
+        if (!username || !password || !email || !aka || !profilePicture) {
+            return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
+        }
+        next();
+    }
+
     validateUserUpdateFields(req, res, next) {
         const { username, password, email, aka, profilePicture } = req.body;
         if (!username && !password && !email && !aka && !profilePicture) {
