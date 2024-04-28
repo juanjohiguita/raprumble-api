@@ -1,7 +1,7 @@
 import {Router} from 'express';
-import {getFormatsRounds, getFormatRound, createFormatRound, deleteFormatRound, updateFormatRoundIdRound, updateFormatRoundAllInformation} from '../controllers/formatsRoundsController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
-import {ping} from '../controllers/indexController.js';
-import FormatsRoundsMiddleware from '../middleware/formatsRoundsMiddleware.js';
+import {getFormatsRounds, getFormatRound, createFormatRound, deleteFormatRound, updateFormatRoundIdRound, updateFormatRoundAllInformation} from '../../controllers/formatsRoundsController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
+import {ping} from '../../controllers/indexController.js';
+import FormatsRoundsMiddleware from '../../middleware/formatsRoundsMiddleware.js';
 
 const path = 'formatsRounds'
 const router = Router();

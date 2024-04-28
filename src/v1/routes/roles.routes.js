@@ -1,8 +1,8 @@
 
 import {Router} from 'express';
-import {getRole, getRoles, createRole, deleteRole, updateRoleType, updateRoleAllInformation} from '../controllers/rolesController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
-import {ping} from '../controllers/indexController.js';
-import RolesMiddleware from '../middleware/rolesMiddleware.js';
+import {getRole, getRoles, createRole, deleteRole, updateRoleType, updateRoleAllInformation} from '../../controllers/rolesController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
+import {ping} from '../../controllers/indexController.js';
+import RolesMiddleware from '../../middleware/rolesMiddleware.js';
 
 const path = 'roles';
 const router = Router();
