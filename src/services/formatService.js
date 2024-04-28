@@ -15,7 +15,7 @@ class formatService {
             const [rows] = await pool.query("SELECT id, name, description FROM formats WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching round");
+            throw new Error("Error fetching format");
         }
     }
 
@@ -24,7 +24,7 @@ class formatService {
             const [result] = await pool.query("INSERT INTO formats(name, description) VALUES (?, ?)", [name, description]);
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating round");
+            throw new Error("Error creating format");
         }
     }
 
@@ -34,7 +34,7 @@ class formatService {
             console.log(result);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating round");
+            throw new Error("Error updating format");
         }
     }
 
@@ -43,7 +43,7 @@ class formatService {
             const [result] = await pool.query("UPDATE formats SET name = ?, description = ? WHERE id = ?", [name, description, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating round");
+            throw new Error("Error updating format");
         }
     }
 
@@ -52,7 +52,7 @@ class formatService {
             const [result] = await pool.query("DELETE FROM formats WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error deleting round");
+            throw new Error("Error deleting format");
         }
     }
 }

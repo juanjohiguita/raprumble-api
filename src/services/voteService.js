@@ -50,11 +50,6 @@ class voteservice {
 
     async deleteVote(id) {
         try {
-            // Esto va en el middleware ya que es una comprobacion de existencia
-            const [existingVote] = await pool.query("SELECT * FROM votes WHERE id = ?", [id]);
-            if (existingVote.length === 0) {
-                throw new Error("day not found");
-            }
             // Eliminacion de la votacion mediante un delete
             const [result] = await pool.query("DELETE FROM votes WHERE id = ?", [id]);
             return result.affectedRows > 0;

@@ -17,6 +17,7 @@ class MembersMiddleware {
 
     validateMemberUpdateFields(req, res, next) {
         const { idUserMember, idCompetitionMember, idRole, score, ptb } = req.body;
+        // Se debe proporcionar al menos un campo para actualizar
         if (!idUserMember && !idCompetitionMember && !idRole && !score && !ptb) {
             return res.status(400).json({ message: "Se debe proporcionar al menos un campo para actualizar" });
         }

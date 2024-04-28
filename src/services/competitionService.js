@@ -15,7 +15,7 @@ class competitionService {
             const [rows] = await pool.query("SELECT id, idFormat, name, numberJudges, numberCompetitors, numberDays FROM Competitions WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching day");
+            throw new Error("Error fetching competition");
         }
     }
 
@@ -24,7 +24,7 @@ class competitionService {
             const [result] = await pool.query("INSERT INTO competitions (idFormat, name, numberJudges, numberCompetitors, numberDays) VALUES (?, ?, ?, ?, ?)", [idFormat, name, numberJudges, numberCompetitors, numberDays]);
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating day");
+            throw new Error("Error creating competition");
         }
     }
 
@@ -35,7 +35,7 @@ class competitionService {
             return result.affectedRows > 0;
 
         } catch (error) {
-            throw new Error("Error updating day");
+            throw new Error("Error updating competition");
         }
     }
 
@@ -45,7 +45,7 @@ class competitionService {
             const [result] = await pool.query("UPDATE competitions SET idFormat = ?,name = ?, numberJudges = ?, numberCompetitors = ?, numberDays = ? WHERE id = ?", [idFormat, name, numberJudges, numberCompetitors, numberDays, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating day");
+            throw new Error("Error updating competition");
         }
     }
 
@@ -55,7 +55,7 @@ class competitionService {
             const [result] = await pool.query("DELETE FROM competitions WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error deleting day");
+            throw new Error("Error deleting competition");
         }
     }
 }

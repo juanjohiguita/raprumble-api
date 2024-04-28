@@ -30,11 +30,6 @@ class userService {
 
     async updateUserAka(id, aka) {
         try {
-            // Comprobacion existencia de la fecha (Esto deberia ir en el middleware)
-            const [existingUser] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
-            if (existingUser.length === 0) {
-                throw new Error("user not found");
-            }
             // Actualizacion del atributo aka mediante un update
             const [result] = await pool.query("UPDATE users SET aka = IFNULL(?, aka) WHERE id = ?", [aka, id]);
             return result.affectedRows > 0;
@@ -56,11 +51,6 @@ class userService {
 
     async deleteUser(id) {
         try {
-            // Esto va en el middleware ya que es una comprobacion de existencia
-            const [existingUser] = await pool.query("SELECT * FROM users WHERE id = ?", [id]);
-            if (existingUser.length === 0) {
-                throw new Error("user not found");
-            }
             // Eliminacion de la fila mediante un delete
             const [result] = await pool.query("DELETE FROM users WHERE id = ?", [id]);
             return result.affectedRows > 0;

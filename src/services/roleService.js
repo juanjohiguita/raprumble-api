@@ -15,7 +15,7 @@ class roleService {
             const [rows] = await pool.query("SELECT id, name, type FROM roles WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching round");
+            throw new Error("Error fetching role");
         }
     }
 
@@ -24,7 +24,7 @@ class roleService {
             const [result] = await pool.query("INSERT INTO roles(name, type) VALUES (?, ?)", [name, type]);
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating round");
+            throw new Error("Error creating role");
         }
     }
 
@@ -34,7 +34,7 @@ class roleService {
             console.log(result);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating round");
+            throw new Error("Error updating role");
         }
     }
 
@@ -43,7 +43,7 @@ class roleService {
             const [result] = await pool.query("UPDATE roles SET name = ?, type = ? WHERE id = ?", [name, type, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating round");
+            throw new Error("Error updating role");
         }
     }
 
@@ -52,7 +52,7 @@ class roleService {
             const [result] = await pool.query("DELETE FROM roles WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error deleting round");
+            throw new Error("Error deleting role");
         }
     }
 }

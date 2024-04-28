@@ -15,7 +15,7 @@ class memberService {
             const [rows] = await pool.query("SELECT id, idUserMember, idCompetitionMember, idRole, score, ptb FROM members WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching round");
+            throw new Error("Error fetching member");
         }
     }
 
@@ -24,7 +24,7 @@ class memberService {
             const [result] = await pool.query("INSERT INTO members(idUserMember, idCompetitionMember, idRole, score, ptb) VALUES (?, ?,?,?,?)", [idUserMember, idCompetitionMember, idRole, score, ptb]);
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating round");
+            throw new Error("Error creating member");
         }
     }
 
@@ -34,7 +34,7 @@ class memberService {
             console.log(result);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating round");
+            throw new Error("Error updating member");
         }
     }
 
@@ -43,7 +43,7 @@ class memberService {
             const [result] = await pool.query("UPDATE members SET idUserMember = ?, idCompetitionMember = ?, idRole = ?, score = ?, ptb = ? WHERE id = ?", [idUserMember, idCompetitionMember, idRole, score, ptb, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating round");
+            throw new Error("Error updating member");
         }
     }
 
@@ -52,7 +52,7 @@ class memberService {
             const [result] = await pool.query("DELETE FROM members WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error deleting round");
+            throw new Error("Error deleting member");
         }
     }
 }
