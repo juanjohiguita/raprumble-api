@@ -1,7 +1,7 @@
 import {Router} from 'express';
 import {getCompetition, getCompetitions, createCompetition, deleteCompetition, updateCompetitionName, updateCompetitionAllInformation} from '../controllers/competitionsController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
 import {ping} from '../controllers/indexController.js';
-import competitionMiddleware from '../middleware/competitionsMiddleware.js';
+import CompetitionsMiddleware from '../middleware/competitionsMiddleware.js';
 const path = 'competitions';
 const router = Router();
 
@@ -15,8 +15,8 @@ router.post(`/${path}`, createCompetition);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
 router.put(`/${path}/:id`, 
-competitionMiddleware.competitionExists, 
-competitionMiddleware.validateUpdateCompetitionFields, 
+CompetitionsMiddleware.validateCompetitionUpdateFields, 
+CompetitionsMiddleware.competitionExists, 
 updateCompetitionAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos

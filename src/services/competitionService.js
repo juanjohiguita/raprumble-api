@@ -31,7 +31,7 @@ class competitionService {
     async updateCompetitionName(id, name) {
         try {
             // Actualizacion del atributo name mediante un update
-            const [result] = await pool.query("UPDATE competitions SET name = IFNULL(?, name) WHERE id = ?", [name, id]);
+            const [result] = await pool.query("UPDATE competitions SET name = ? WHERE id = ?", [name, id]);
             return result.affectedRows > 0;
 
         } catch (error) {

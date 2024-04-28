@@ -30,7 +30,7 @@ class formatService {
 
     async updateFormatDescription(id, description) {
         try {
-            const [result] = await pool.query("UPDATE formats SET description = IFNULL(?, description) WHERE id = ?", [description, id]);
+            const [result] = await pool.query("UPDATE formats SET description = ? WHERE id = ?", [description, id]);
             console.log(result);
             return result.affectedRows > 0;
         } catch (error) {

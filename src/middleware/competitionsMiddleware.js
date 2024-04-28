@@ -1,6 +1,6 @@
 import competitionService from "../services/competitionService.js";
 
-class competitionMiddleware {
+class CompetitionsMiddleware {
     async competitionExists(req, res, next) {
         const id = req.params.id;
         try {
@@ -15,7 +15,7 @@ class competitionMiddleware {
         }
     }
 
-    validateUpdateCompetitionFields(req, res, next) {
+    validateCompetitionUpdateFields(req, res, next) {
         const { idFormat, name, numberJudges, numberCompetitors, numberDays } = req.body;
         if (!idFormat && !name && !numberJudges && !numberCompetitors && !numberDays) {
             return res.status(400).json({ message: "Se debe proporcionar al menos un campo para actualizar" });
@@ -24,7 +24,7 @@ class competitionMiddleware {
     }
 }
 
-export default new competitionMiddleware();
+export default new CompetitionsMiddleware();
 
 
 

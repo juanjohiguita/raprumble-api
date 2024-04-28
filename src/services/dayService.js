@@ -30,13 +30,8 @@ class dayService {
 
     async updateDayFinish(id, finish) {
         try {
-            // Comprobacion existencia de la fecha (Esto deberia ir en el middleware)
-            const [existingDay] = await pool.query("SELECT * FROM days WHERE id = ?", [id]);
-            if (existingDay.length === 0) {
-                throw new Error("day not found");
-            }
             // Actualizacion del atributo finish mediante un update
-            const [result] = await pool.query("UPDATE days SET finish = IFNULL(?, finish) WHERE id = ?", [finish, id]);
+            const [result] = await pool.query("UPDATE days SET finish = finish WHERE id = ?", [finish, id]);
             return result.affectedRows > 0;
 
         } catch (error) {
@@ -56,10 +51,6 @@ class dayService {
 
     async deleteFormatday(id) {
         try {
-            const [existingDay] = await pool.query("SELECT * FROM days WHERE id = ?", [id]);
-            if (existingDay.length === 0) {
-                throw new Error("day not found");
-            }
             const [result] = await pool.query("DELETE FROM days WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {

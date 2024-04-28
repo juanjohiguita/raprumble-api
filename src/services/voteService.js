@@ -31,7 +31,7 @@ class voteservice {
     async updateVoteScoreMC1(id, scoreMC1) {
         try {
             // Actualizacion del atributo scoreMC1 mediante un update
-            const [result] = await pool.query("UPDATE votes SET scoreMC1 = IFNULL(?, scoreMC1) WHERE id = ?", [scoreMC1, id]);
+            const [result] = await pool.query("UPDATE votes SET scoreMC1 = ? WHERE id = ?", [scoreMC1, id]);
             return result.affectedRows > 0;
         } catch (error) {
             throw new Error("Error updating vote");

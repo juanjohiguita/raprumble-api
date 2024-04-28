@@ -30,7 +30,7 @@ class memberService {
 
     async updateMemberPtb(id, ptb) {
         try {
-            const [result] = await pool.query("UPDATE members SET ptb = IFNULL(?, ptb) WHERE id = ?", [ptb, id]);
+            const [result] = await pool.query("UPDATE members SET ptb = ? WHERE id = ?", [ptb, id]);
             console.log(result);
             return result.affectedRows > 0;
         } catch (error) {

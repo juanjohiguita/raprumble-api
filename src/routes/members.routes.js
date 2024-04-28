@@ -1,6 +1,7 @@
 import {Router} from 'express';
 import {getMember, getMembers, createMember, deleteMember, updateMemberPtb, updateMemberAllInformation} from '../controllers/membersController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
 import {ping} from '../controllers/indexController.js';
+import MembersMiddleware from '../middleware/membersMiddleware.js';
 
 const path = 'members'  
 const router = Router();
@@ -14,7 +15,10 @@ router.get(`/${path}/:id`, getMember);
 router.post(`/${path}`, createMember);
 
 // El metodo put permite actualizar todos los datos pero no solo una parte de llos
-router.put(`/${path}/:id`, updateMemberAllInformation);
+router.put(`/${path}/:id`, 
+MembersMiddleware.validateMemberUpdateFields ,
+MembersMiddleware.memberExists,
+updateMemberAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos
 router.patch(`/${path}/:id`, updateMemberPtb);
