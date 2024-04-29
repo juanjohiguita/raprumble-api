@@ -1,0 +1,255 @@
+{
+    "components": {
+      "schemas": {
+        "User": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "username": {
+              "type": "string",
+              "maxLength": 16
+            },
+            "email": {
+              "type": "string",
+              "maxLength": 255
+            },
+            "password": {
+              "type": "string",
+              "maxLength": 32
+            },
+            "aka": {
+              "type": "string",
+              "maxLength": 16
+            },
+            "profilePicture": {
+              "type": "string",
+              "maxLength": 255
+            }
+          },
+          "required": [
+            "username",
+            "email",
+            "password"
+          ]
+        },
+        "Format": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string",
+              "maxLength": 16
+            },
+            "description": {
+              "type": "string",
+              "maxLength": 255
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "Competition": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idFormat": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string",
+              "maxLength": 16
+            },
+            "numberJudges": {
+              "type": "integer"
+            },
+            "numberCompetitors": {
+              "type": "integer"
+            },
+            "numberDays": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "idFormat",
+            "name",
+            "numberJudges",
+            "numberCompetitors",
+            "numberDays"
+          ]
+        },
+        "Rol": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string",
+              "maxLength": 16
+            }
+          },
+          "required": [
+            "name"
+          ]
+        },
+        "Member": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idUserMember": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idCompetitionMember": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idRol": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "score": {
+              "type": "integer"
+            },
+            "ptb": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "idUserMember",
+            "idCompetitionMember",
+            "idRol"
+          ]
+        },
+        "Round": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "name": {
+              "type": "string",
+              "maxLength": 16
+            },
+            "numberPatterns": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "name",
+            "numberPatterns"
+          ]
+        },
+        "FormatRound": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idFormat": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idRound": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          "required": [
+            "idFormat",
+            "idRound"
+          ]
+        },
+        "Day": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idCompetition": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "numberDay": {
+              "type": "integer"
+            },
+            "finish": {
+              "type": "integer"
+            },
+            "enable": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "idCompetition",
+            "numberDay",
+            "finish",
+            "enable"
+          ]
+        },
+        "Vote": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idCompetition": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idMC1": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idMC2": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idJudge": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "idDay": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "scoreMC1": {
+              "type": "number",
+              "format": "float"
+            },
+            "scoreMC2": {
+              "type": "number",
+              "format": "float"
+            }
+          },
+          "required": [
+            "idCompetition",
+            "idMC1",
+            "idMC2",
+            "idJudge",
+            "idDay"
+          ]
+        }
+      }
+    }
+  }
+  

@@ -37,7 +37,7 @@ router.get(`/ping`, ping)
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: './src/models/competitionModel'
+ *                     $ref: '../swagger/swagger.json#/components/schemas/Competition'
  */
 router.get(`/${path}`, getCompetitions);
 
@@ -60,7 +60,7 @@ router.get(`/${path}`, getCompetitions);
  *         content:
  *           application/json:
  *             schema:
- *               $ref: './src/models/competitionModel.js'
+ *               $ref: '../swagger/swagger.json#/components/schemas/Competition'
  *       '404':
  *         description: No se encontró la competición con el ID proporcionado
  */
@@ -96,7 +96,7 @@ getCompetition);
  *                 data:
  *                   type: array
  *                   items:
- *                     $ref: './src/models/memberModel.js'
+ *                     $ref: '../swagger/swagger.json#/components/schemas/Competition'
  *       404:    
  *          description: No se encontró la competición con el ID proporcionado 
  */
@@ -104,21 +104,105 @@ router.get(`/${path}/:id/members`,
 CompetitionsMiddleware.competitionExists,   
 getCompetitionMembersAkaAndScore);
 
+/**
+ * @swagger
+ * /api/v1/competitions:
+ *   post:
+ *     tags:
+ *       - Competitions
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '../swagger/swagger.json#/components/schemas/Competition'
+ *     responses:
+ *       201:
+ *         description: Created
+ *       404: 
+ *        description: No se ha podido crear la competicion 
+ */
 router.post(`/${path}`, createCompetition);
 
-// El metodo put permite actualizar todos los datos pero no solo una parte de llos
+/**
+ * @swagger
+ * /api/v1/competitions/{id}:
+ *   put:
+ *     summary: Actualizar todos los datos de una competición
+ *     tags: [Competitions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la competición a actualizar
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '../swagger/swagger.json#/components/schemas/Competition'
+ *     responses:
+ *       '200':
+ *         description: Competición actualizada exitosamente
+ *       '404':
+ *         description: No se encontró la competición con el ID proporcionado
+ */
 router.put(`/${path}/:id`, 
 CompetitionsMiddleware.competitionExists, 
 CompetitionsMiddleware.validateCompetitionAllUpdateFields, 
 updateCompetitionAllInformation);
 
-// El metodo patch permite actualizar solo una parte de los datos
+/**
+ * @swagger
+ * /api/v1/competitions/{id}:
+ *   patch:
+ *     summary: Actualizar parte de los datos de una competición
+ *     tags: [Competitions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la competición a actualizar
+ *         schema:
+ *           type: integer
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '../swagger/swagger.json'
+ *     responses:
+ *       '200':
+ *         description: Competición actualizada exitosamente
+ *       '404':
+ *         description: No se encontró la competición con el ID proporcionado
+ */
 router.patch(`/${path}/:id`,
 CompetitionsMiddleware.competitionExists,
 CompetitionsMiddleware.validateCompetitionUpdateFields,
 updateCompetitionName);
 
-
+/**
+ * @swagger
+ * /api/v1/competitions/{id}:
+ *   delete:
+ *     summary: Eliminar una competición por su ID
+ *     tags: [Competitions]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID de la competición a eliminar
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       '204':
+ *         description: Competición eliminada exitosamente
+ *       '404':
+ *         description: No se encontró la competición con el ID proporcionado
+ */
 router.delete(`/${path}/:id`, 
 CompetitionsMiddleware.competitionExists,
 deleteCompetition);
