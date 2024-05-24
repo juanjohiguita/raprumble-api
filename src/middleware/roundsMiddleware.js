@@ -17,7 +17,7 @@ class RoundsMiddleware {
 
     validateRoundAllUpdateFields(req, res, next) {
         const { name, numberPatterns } = req.body;
-        if (!name || !numberPatterns) {
+        if (name == undefined || numberPatterns == undefined) {
             return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
         }
         next();

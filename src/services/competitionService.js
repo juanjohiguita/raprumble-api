@@ -28,6 +28,17 @@ class competitionService {
         }
     }
 
+    async getCompetitionMembersAkaAndRole (idCompetition) {
+        try {
+            const [rows] = await pool.query("SELECT u.aka, m.idRole, r.name AS roleName FROM users u JOIN members m ON u.id = m.idUserMember JOIN roles r ON m.idRole = r.id WHERE m.idCompetitionMember = ?;", [idCompetition]);
+            return rows;
+        } catch (error) {
+            throw new Error("Error fetching competition");
+        }
+    }
+
+
+
     async createCompetition(idFormat, name, numberJudges, numberCompetitors, numberDays) {
         try {
             const [result] = await pool.query("INSERT INTO competitions (idFormat, name, numberJudges, numberCompetitors, numberDays) VALUES (?, ?, ?, ?, ?)", [idFormat, name, numberJudges, numberCompetitors, numberDays]);

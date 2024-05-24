@@ -17,7 +17,7 @@ class VotesMiddleware {
 
     validateVoteAllUpdateFields(req, res, next) {
         const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 } = req.body;
-        if (!idCompetition || !idMC1 || !idMC2 || !idJudge || !idDay || !scoreMC1 || !scoreMC2) {
+        if (idCompetition == undefined || idMC1 == undefined || idMC2 == undefined || idJudge == undefined || idDay == undefined || scoreMC1 == undefined || scoreMC2 == undefined) {
             return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar la votación" });
         }
         next();

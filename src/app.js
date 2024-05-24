@@ -22,7 +22,7 @@ const versionApi = "v1";
 
 app.use(express.json());
 app.use(cors());
-app.use(cache("2 minutes"));
+// app.use(cache("2 minutes"));
 
 app.use(`/api/${versionApi}`, usersRoutes, indexRoutes, roundsRoutes, formatsRoutes, competitionsRoutes, rolesRoutes, daysRoutes, 
 formatsRoundsRoutes, membersRoutes, votesRoutes);

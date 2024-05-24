@@ -42,7 +42,7 @@ class dayService {
     async updateDayFinish(id, finish) {
         try {
             // Actualizacion del atributo finish mediante un update
-            const [result] = await pool.query("UPDATE days SET finish = finish WHERE id = ?", [finish, id]);
+            const [result] = await pool.query("UPDATE days SET finish = ? WHERE id = ?", [finish, id]);
             return result.affectedRows > 0;
 
         } catch (error) {

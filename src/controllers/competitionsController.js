@@ -28,11 +28,24 @@ export const getCompetition = async (req, res) => {
 export const getCompetitionMembersAkaAndScore = async (req, res) => {
     const id = req.params.id;
     try {
-        const competition = await competitionService.getCompetitionMembersAkaAndScore(id);
-        if (!competition) {
+        const members = await competitionService.getCompetitionMembersAkaAndScore(id);
+        if (!members) {
             return res.status(404).json({ message: "Competición no encontrado" });
         }
-        res.json(competition);
+        res.json(members);
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error en el servidor" });
+    }
+};
+
+export const getCompetitionMembersAkaAndRole = async (req, res) => {
+    const idCompetition = req.params.id;
+    try {
+        const members = await competitionService.getCompetitionMembersAkaAndRole(idCompetition);
+        if (!members) {
+            return res.status(404).json({ message: "Competición no encontrado" });
+        }
+        res.json(members);
     } catch (error) {
         res.status(500).json({ message: error.message || "Error en el servidor" });
     }

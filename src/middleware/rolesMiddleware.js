@@ -17,7 +17,7 @@ class RolesMiddleware {
 
     validateRoleAllUpdateFields(req, res, next) {
         const { name, type } = req.body;
-        if (!name || !type) {
+        if (name == undefined || type == undefined) {
             return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
         }
         next();

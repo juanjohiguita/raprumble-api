@@ -25,7 +25,7 @@ class CompetitionsMiddleware {
 
     validateCompetitionAllUpdateFields(req, res, next) {
         const { idFormat, name, numberJudges, numberCompetitors, numberDays } = req.body;
-        if (!idFormat || !name || !numberJudges || !numberCompetitors || !numberDays) {
+        if (idFormat == undefined || name == undefined || numberJudges == undefined || numberCompetitors == undefined || numberDays == undefined) {
             return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
         }
         next();

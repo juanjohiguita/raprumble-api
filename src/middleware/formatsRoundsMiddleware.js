@@ -17,7 +17,7 @@ class FormatsRoundsMiddleware {
 
     validateFormatRoundAllUpdateFields(req, res, next) {
         const { idFormat, idRound } = req.body;
-        if (!idFormat || !idRound) {
+        if (idFormat == undefined || idRound == undefined) {
             return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
         }
         next();
