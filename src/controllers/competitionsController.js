@@ -38,10 +38,10 @@ export const getCompetitionMembersAkaScoreAndPtb = async (req, res) => {
     }
 };
 
-export const getCompetitionMembersAkaAndRole = async (req, res) => {
+export const getCompetitionMembersAkaRoleNameRoleIdUserIdAndMemberId = async (req, res) => {
     const idCompetition = req.params.id;
     try {
-        const members = await competitionService.getCompetitionMembersAkaAndRole(idCompetition);
+        const members = await competitionService.getCompetitionMembersAkaRoleNameRoleIdUserIdAndMemberId(idCompetition);
         if (!members) {
             return res.status(404).json({ message: "Competición no encontrado" });
         }

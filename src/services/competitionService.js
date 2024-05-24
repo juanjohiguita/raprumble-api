@@ -28,9 +28,9 @@ class competitionService {
         }
     }
 
-    async getCompetitionMembersAkaAndRole (idCompetition) {
+    async getCompetitionMembersAkaRoleNameRoleIdUserIdAndMemberId (idCompetition) {
         try {
-            const [rows] = await pool.query("SELECT u.aka, m.idRole, r.name AS roleName FROM users u JOIN members m ON u.id = m.idUserMember JOIN roles r ON m.idRole = r.id WHERE m.idCompetitionMember = ?;", [idCompetition]);
+            const [rows] = await pool.query("SELECT u.aka, m.idRole, r.name AS roleName, m.idUserMember AS idUser, m.id AS idMember, m.idCompetitionMember AS idCompetition FROM users u JOIN members m ON u.id = m.idUserMember JOIN roles r ON m.idRole = r.id WHERE m.idCompetitionMember = ?;", [idCompetition]);
             return rows;
         } catch (error) {
             throw new Error("Error fetching competition");
