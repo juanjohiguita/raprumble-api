@@ -19,6 +19,16 @@ class voteservice {
         }
     }
 
+    async getVotesByIdCompetitionAndIdDay (idCompetition, idDay) {
+        try {
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE idCompetition = ? AND idDay = ?", [idCompetition, idDay]);
+            return rows;
+        } catch (error) {
+            throw new Error("Error fetching vote");
+        }
+    }
+    
+
     async createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2) {
         try {
             const [result] = await pool.query("INSERT INTO votes (idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2) VALUES (?, ?, ?, ?, ?, ?, ?)", [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2]);
