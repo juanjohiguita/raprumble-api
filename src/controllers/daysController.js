@@ -25,6 +25,21 @@ export const getDay = async (req, res) => {
     }
 };
 
+
+
+export const getCountDaysByCompetition = async (req, res) => {
+    const idCompetition = req.params.idCompetition;
+    try {
+        const day = await dayService.getCountDaysByCompetition(idCompetition);
+        if (!day) {
+            return res.status(404).json({ message: "Día no encontrado" });
+        }
+        res.json(day);
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error en el servidor" });
+    }
+};
+
 export const createDay = async (req, res) => {
     const { idCompetition, numberDay, finish, enable } = req.body;
     try {

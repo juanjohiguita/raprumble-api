@@ -19,6 +19,17 @@ class dayService {
         }
     }
 
+    async getCountDaysByCompetition (idCompetition) {
+        try {
+            const [rows] = await pool.query("SELECT COUNT(*) AS daysCount FROM days WHERE finish = 1 AND idCompetition = ?", [idCompetition]);
+            return rows[0];
+        } catch (error) {
+            throw new Error("Error fetching day");
+        }
+    }
+
+    
+
     async createDay(idCompetition, numberDay, finish, enable) {
         try {
             const [result] = await pool.query("INSERT INTO days (idCompetition, numberDay, finish, enable) VALUES (?, ?, ?, ?)", [idCompetition, numberDay, finish, enable]);

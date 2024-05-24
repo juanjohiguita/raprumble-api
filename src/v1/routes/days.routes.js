@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getDay, getDays, createDay, updateDayFinish, deleteDay, updateDayAllInformation } from '../../controllers/daysController.js'; 
+import { getDay, getDays, createDay, updateDayFinish, deleteDay, updateDayAllInformation, getCountDaysByCompetition } from '../../controllers/daysController.js'; 
 import {ping} from '../../controllers/indexController.js';
 import DaysMiddleware from '../../middleware/daysMiddleware.js';
 const path = 'days';
@@ -13,6 +13,9 @@ router.get(`/${path}`, getDays);
 router.get(`/${path}/:id`, 
 DaysMiddleware.dayExists,
 getDay);
+
+router.get(`/${path}/searchBy/:idCompetition/count`, 
+getCountDaysByCompetition);
 
 router.post(`/${path}`, createDay);
 
