@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {getCompetition, getCompetitions, getCompetitionMembersAkaAndScore,getCompetitionMembersAkaAndRole,  
+import {getCompetition, getCompetitions, getCompetitionMembersAkaScoreAndPtb,getCompetitionMembersAkaAndRole,  
 createCompetition, deleteCompetition, updateCompetitionName, updateCompetitionAllInformation} from '../../controllers/competitionsController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
 import {ping} from '../../controllers/indexController.js';
 import CompetitionsMiddleware from '../../middleware/competitionsMiddleware.js';
@@ -101,9 +101,9 @@ getCompetition);
  *       404:    
  *          description: No se encontró la competición con el ID proporcionado 
  */
-router.get(`/${path}/:id/members/akaAndScore`, 
+router.get(`/${path}/:id/members/akaScoreAndPtb`, 
 CompetitionsMiddleware.competitionExists,   
-getCompetitionMembersAkaAndScore);
+getCompetitionMembersAkaScoreAndPtb);
 
 router.get(`/${path}/:id/members/akaAndRole`, 
 CompetitionsMiddleware.competitionExists,   
