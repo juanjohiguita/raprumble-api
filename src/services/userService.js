@@ -59,15 +59,19 @@ class userService {
         }
     }
 
-    async updateUserAllInformation(id, username, email, password, aka, profilePicture ) {
+    async updateUserAllInformation(id, username, password, email, aka, profilePicture) {
         try {
-            // Actualizacion de los atributos mediante un update
-            const [result] = await pool.query("UPDATE users SET username = ?, email = ?, password= ?, aka = ?, profilePicture = ? WHERE id = ?", [username, email, password, aka, profilePicture, id]);
+            // Actualización de los atributos mediante un update
+            const [result] = await pool.query(
+                "UPDATE users SET username = ?, email = ?, password = ?, aka = ?, profilePicture = ? WHERE id = ?",
+                [username, email, password, aka, profilePicture, id]
+            );
             return result.affectedRows > 0;
         } catch (error) {
             throw new Error("Error updating user");
         }
     }
+    
 
     async deleteUser(id) {
         try {
