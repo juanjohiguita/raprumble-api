@@ -101,11 +101,11 @@ getCompetition);
  *       404:    
  *          description: No se encontró la competición con el ID proporcionado 
  */
-router.get(`/${path}/:id/members/akaScoreAndPtb`, 
+router.get(`/${path}/:id/members/aka/score/ptb`, 
 CompetitionsMiddleware.competitionExists,   
 getCompetitionMembersAkaScoreAndPtb);
 
-router.get(`/${path}/:id/members/akaRoleNameRoleIdUserIdAndMemberId`, 
+router.get(`/${path}/:id/members/aka/roleId/roleName/userId/memberId`, 
 CompetitionsMiddleware.competitionExists,   
 getCompetitionMembersAkaRoleNameRoleIdUserIdAndMemberId);
 
