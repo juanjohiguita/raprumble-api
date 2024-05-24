@@ -27,7 +27,7 @@ app.use(cache("2 minutes"));
 app.use(`/api/${versionApi}`, usersRoutes, indexRoutes, roundsRoutes, formatsRoutes, competitionsRoutes, rolesRoutes, daysRoutes, 
 formatsRoundsRoutes, membersRoutes, votesRoutes);
 
-app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
+app.use(`/api/${versionApi}/swagger`, swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 app.use((req, res, next) => {
     res.status(404).json({message: "Endpoint not found"});

@@ -172,7 +172,7 @@ updateCompetitionAllInformation);
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '../swagger/swagger.json'
+ *             $ref: './src/swagger/swagger-outputjson#/components/schemas/Competition'
  *     responses:
  *       '200':
  *         description: Competición actualizada exitosamente

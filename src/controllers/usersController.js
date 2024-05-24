@@ -22,6 +22,31 @@ export const getUser = async (req, res) => {
     }
 };
 
+export const getUserByUsername = async (req, res) => {
+    const username = req.params.username;
+    try {
+        const user = await userService.getUserByUsername(username);
+        if (!user) return res.status(404).json({ message: "User not found" });
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error in the server" });
+    }
+};
+
+export const getUserByEmail = async (req, res) => {
+    const email = req.params.email;
+    try {
+        const user = await userService.getUserByEmail(email);
+        if (!user) return res.status(404).json({ message: "User not found" });
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error in the server" });
+    }
+};
+
+
+
+
 export const createUser = async (req, res) => {
     const { username, password, email, aka, profilePicture } = req.body;
     try {
