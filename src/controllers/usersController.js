@@ -2,6 +2,29 @@
 import userService from "../services/userService.js";
 import bcrypt from "bcrypt";
 
+export const loginUser = async (req, res) => {
+    const {email, password} = req.body;
+
+    try {
+        // Obtén el usuario de la base de datos por su email
+        const user = await userService.getUserByEmail(email);
+        if (!user) {
+            return res.status(401).json({ message: "Authentication failed. User not found." });
+        }
+
+        // Compara la contraseña proporcionada con la contraseña hasheada almacenada
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            return res.status(401).json({ message: "Authentication failed. Wrong password." });
+        }
+
+        // Autenticación exitosa
+        res.status(200).json({ message: "Authentication successful", userId: user.id });
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error in the server" });
+    }
+};
+
 export const getUsers = async (req, res) => {
     try {
         const users = await userService.getUsers();

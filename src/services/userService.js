@@ -30,19 +30,18 @@ class userService {
     
     async getUserByEmail (email) {
         try {
-            const [rows] = await pool.query("SELECT id, username, email, aka, profilePicture FROM users WHERE email = ?", [email]);
+            const [rows] = await pool.query("SELECT id, password, username, email, aka, profilePicture FROM users WHERE email = ?", [email]);
             return rows[0];
         } catch (error) {
             throw new Error("Error fetching user");
         }
     }
-    
+
     
 
     async createUser(username, password, email, aka, profilePicture) {
         try {
             const [result] = await pool.query("INSERT INTO users (username, password, email, aka, profilePicture) VALUES (?, ?, ?, ?, ?)", [username, password, email, aka, profilePicture]);
-            console.log(result);
             return result.insertId;
         } catch (error) {
             throw new Error("Error creating user");
