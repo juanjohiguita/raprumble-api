@@ -1,5 +1,6 @@
 
 import userService from "../services/userService.js";
+import bcrypt from "bcrypt";
 
 export const getUsers = async (req, res) => {
     try {
@@ -48,7 +49,12 @@ export const getUserByEmail = async (req, res) => {
 
 
 export const createUser = async (req, res) => {
-    const { username, password, email, aka, profilePicture } = req.body;
+    const username = req.body.username;
+    const password = await bcrypt.hash(req.body.password, 10);
+    const email = req.body.email;
+    const aka = req.body.aka;
+    const profilePicture = req.body.profilePicture;
+
     try {
         const userId = await userService.createUser(username, password, email, aka, profilePicture );
         res.status(201).json({ message: "User created", userId });

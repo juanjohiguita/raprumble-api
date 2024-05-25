@@ -3,7 +3,7 @@ import { pool } from "../config/db.js";
 class userService {
     async getUsers() {
         try {
-            const [rows] = await pool.query("SELECT id, username, email, aka, profilePicture FROM users");
+            const [rows] = await pool.query("SELECT id, username, password, email, aka, profilePicture FROM users");
             return rows;
         } catch (error) {
             throw new Error("Error fetching users");
@@ -42,6 +42,7 @@ class userService {
     async createUser(username, password, email, aka, profilePicture) {
         try {
             const [result] = await pool.query("INSERT INTO users (username, password, email, aka, profilePicture) VALUES (?, ?, ?, ?, ?)", [username, password, email, aka, profilePicture]);
+            console.log(result);
             return result.insertId;
         } catch (error) {
             throw new Error("Error creating user");
