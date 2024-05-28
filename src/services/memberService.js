@@ -31,12 +31,22 @@ class memberService {
     async updateMemberPtb(id, ptb) {
         try {
             const [result] = await pool.query("UPDATE members SET ptb = ? WHERE id = ?", [ptb, id]);
-            console.log(result);
             return result.affectedRows > 0;
         } catch (error) {
             throw new Error("Error updating member");
         }
     }
+
+    async updateMemberIdRole(id, idRole) {
+        try {
+            const [result] = await pool.query("UPDATE members SET idRole = ? WHERE id = ?", [idRole, id]);
+            return result.affectedRows > 0;
+        } catch (error) {
+            throw new Error("Error updating member");
+        }
+    }
+
+    
 
     async updateMemberAllInformation(id, idUserMember, idCompetitionMember, idRole, score, ptb) {
         try {

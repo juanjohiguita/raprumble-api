@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {getMember, getMembers, createMember, deleteMember, updateMemberPtb, updateMemberAllInformation} from '../../controllers/membersController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
+import {getMember, getMembers, createMember, deleteMember, updateMemberPtb, updateMemberAllInformation, updateMemberIdRole} from '../../controllers/membersController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
 import {ping} from '../../controllers/indexController.js';
 import MembersMiddleware from '../../middleware/membersMiddleware.js';
 
@@ -23,10 +23,15 @@ MembersMiddleware.validateMemberAllUpdateFields,
 updateMemberAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch(`/${path}/:id`, 
+router.patch(`/${path}/:id/ptb`, 
 MembersMiddleware.memberExists,
 MembersMiddleware.validateMemberUpdateFields,
 updateMemberPtb);
+
+router.patch(`/${path}/:id/idRole`, 
+MembersMiddleware.memberExists,
+MembersMiddleware.validateMemberUpdateFields,
+updateMemberIdRole);
 
 
 router.delete(`/${path}/:id`, 
