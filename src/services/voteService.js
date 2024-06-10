@@ -12,7 +12,7 @@ class voteservice {
 
     async getVote (id) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE id = ?", [id]);
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
             throw new Error("Error fetching vote");
@@ -21,7 +21,7 @@ class voteservice {
     
     async getAllVotesBattle (idCompetition, idMC1, idMC2) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE idCompetition = ? AND ((idMC1 = ? AND idMC2 = ?) OR (idMC1 = ? AND idMC2 = ?))", 
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE idCompetition = ? AND ((idMC1 = ? AND idMC2 = ?) OR (idMC1 = ? AND idMC2 = ?))", 
             [idCompetition, idMC1, idMC2, idMC2, idMC1]);
             return rows;
         } catch (error) {
@@ -40,7 +40,7 @@ class voteservice {
     }
     async getVotesByIdCompetitionAndIdDay (idCompetition, idDay) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE idCompetition = ? AND idDay = ?", [idCompetition, idDay]);
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE idCompetition = ? AND idDay = ?", [idCompetition, idDay]);
             return rows;
         } catch (error) {
             throw new Error("Error fetching vote");
@@ -49,7 +49,7 @@ class voteservice {
 
     async getVoteIdCompetitionIdjudgeIdMC1IdMC2 (idCompetition, idJudge, idMC1, idMC2) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE idCompetition = ? AND idJudge = ? AND idMC1 = ? AND idMC2 = ?", [idCompetition, idJudge, idMC1, idMC2]);   
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE idCompetition = ? AND idJudge = ? AND idMC1 = ? AND idMC2 = ?", [idCompetition, idJudge, idMC1, idMC2]);   
             return rows;
         } catch (error) {
             throw new Error("Error fetching vote");
@@ -59,9 +59,9 @@ class voteservice {
 
     
 
-    async createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2) {
+    async createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner) {
         try {
-            const [result] = await pool.query("INSERT INTO votes (idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2) VALUES (?, ?, ?, ?, ?, ?, ?)", [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2]);
+            const [result] = await pool.query("INSERT INTO votes (idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner]);
             return result.insertId;
         } catch (error) {
             throw new Error("Error creating vote");
@@ -78,10 +78,10 @@ class voteservice {
         }
     }
 
-    async updateVoteAllInformation(id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 ) {
+    async updateVoteAllInformation(id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner ) {
         try {
             // Actualizacion de los atributos mediante un update
-            const [result] = await pool.query("UPDATE votes SET idCompetition = ?, idMC1 = ?, idMC2 = ?, idJudge = ?, idDay = ?, scoreMC1 = ?, scoreMC2 = ? WHERE id = ?", [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, id]);
+            const [result] = await pool.query("UPDATE votes SET idCompetition = ?, idMC1 = ?, idMC2 = ?, idJudge = ?, idDay = ?, scoreMC1 = ?, scoreMC2 = ?, winner = ? WHERE id = ?", [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, id, winner]);
             return result.affectedRows > 0;
         } catch (error) {
             throw new Error("Error updating vote");

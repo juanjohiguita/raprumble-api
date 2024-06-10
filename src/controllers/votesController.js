@@ -80,9 +80,9 @@ export const getVoteIdCompetitionIdjudgeIdMC1IdMC2 = async (req, res) => {
 
 
 export const createVote = async (req, res) => {
-    const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 } = req.body;
+    const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner } = req.body;
     try {
-        const voteId = await voteService.createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 );
+        const voteId = await voteService.createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner);
         res.status(201).json({ message: "Vote created", voteId });
     } catch (error) {
         res.status(500).json({ message: error.message || "Error in the server" });
@@ -92,11 +92,11 @@ export const createVote = async (req, res) => {
 export const updateVoteAllInformation = async (req, res) => {
     // Obtencion del id de la votacion a modificar
     const id = req.params.id;
-    const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 } = req.body;
+    const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner } = req.body;
 
     try {
         // Llamada al servicio para actualizar la votacion  con toda la informacion
-        const success = await voteService.updateVoteAllInformation(id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2);
+        const success = await voteService.updateVoteAllInformation(id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner);
         if (!success) {
             return res.status(404).json({ message: "Voto no encontrado" });
         }
