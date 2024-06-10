@@ -10,6 +10,16 @@ class memberService {
         }
     }
 
+    async getUserMembers(idUser) {
+        try {
+            const [rows] = await pool.query("SELECT id, idUserMember, idCompetitionMember, idRole, score, ptb FROM members WHERE idUserMember = ?", [idUser]);
+            return rows;
+        } catch (error) {
+            throw new Error("Error fetching members");
+        }
+    }
+    
+
     async getMember (id) {
         try {
             const [rows] = await pool.query("SELECT id, idUserMember, idCompetitionMember, idRole, score, ptb FROM members WHERE id = ?", [id]);

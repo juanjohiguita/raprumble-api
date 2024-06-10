@@ -34,6 +34,22 @@ export const getVotesByIdCompetitionAndIdDay = async (req, res) => {
 };
 
 
+export const getVoteIdCompetitionIdjudgeIdMC1IdMC2 = async (req, res) => {
+    const idCompetition = req.params.idCompetition;  
+    const idJudge = req.params.idJudge; 
+    const idMC1 = req.params.idMC1;
+    const idMC2 = req.params.idMC2;
+    try {
+        const vote = await voteService.getVoteIdCompetitionIdjudgeIdMC1IdMC2(idCompetition, idJudge, idMC1, idMC2);
+        if (!vote) return res.status(404).json({ message: "Vote not found" });
+        res.json(vote);
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error in the server" });
+    }
+};
+
+
+
 
 export const createVote = async (req, res) => {
     const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 } = req.body;

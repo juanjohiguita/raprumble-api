@@ -12,6 +12,22 @@ export const getMembers = async (req, res) => {
     }
 };
 
+export const getUserMembers = async (req, res) => {
+    const idUser = req.params.idUser;
+    try {
+        const member = await memberService.getUserMembers(idUser);
+        if (member.length <= 0) {
+            return res.status(404).json({ message: "member not found" });
+        }
+        res.json(member);
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error in the server" });
+    }
+};
+
+
+
+
 export const getMember = async (req, res) => {
     const id = req.params.id;
     try {

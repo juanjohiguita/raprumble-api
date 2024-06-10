@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {getMember, getMembers, createMember, deleteMember, updateMemberPtb, updateMemberAllInformation, updateMemberIdRole} from '../../controllers/membersController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
+import {getMember, getMembers, createMember, deleteMember, updateMemberPtb, updateMemberAllInformation, updateMemberIdRole, getUserMembers} from '../../controllers/membersController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
 import {ping} from '../../controllers/indexController.js';
 import MembersMiddleware from '../../middleware/membersMiddleware.js';
 
@@ -9,6 +9,8 @@ const router = Router();
 router.get(`/ping`, ping)
 
 router.get(`/${path}`, getMembers);
+
+router.get(`/${path}/:idUser`, getUserMembers);
 
 router.get(`/${path}/:id`, 
 MembersMiddleware.memberExists,

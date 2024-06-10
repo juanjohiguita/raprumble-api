@@ -27,6 +27,17 @@ class voteservice {
             throw new Error("Error fetching vote");
         }
     }
+
+    async getVoteIdCompetitionIdjudgeIdMC1IdMC2 (idCompetition, idJudge, idMC1, idMC2) {
+        try {
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE idCompetition = ? AND idJudge = ? AND idMC1 = ? AND idMC2 = ?", [idCompetition, idJudge, idMC1, idMC2]);   
+            return rows;
+        } catch (error) {
+            throw new Error("Error fetching vote");
+        }
+    }
+
+
     
 
     async createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2) {

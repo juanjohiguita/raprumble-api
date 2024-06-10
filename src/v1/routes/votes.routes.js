@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {getVote, getVotes, getVotesByIdCompetitionAndIdDay, createVote, deleteVote, updateVoteScoreMC1, updateVoteAllInformation} from '../../controllers/votesController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
+import {getVote, getVotes, getVotesByIdCompetitionAndIdDay, getVoteIdCompetitionIdjudgeIdMC1IdMC2, createVote, deleteVote, updateVoteScoreMC1, updateVoteAllInformation} from '../../controllers/votesController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
 import {ping} from '../../controllers/indexController.js';
 import VotesMiddleware from '../../middleware/votesMiddleware.js'; 
 const path = 'votes'
@@ -15,6 +15,10 @@ getVote);
 
 router.get(`/${path}/searchBy/idCompetition/:idCompetition/idDay/:idDay`,
 getVotesByIdCompetitionAndIdDay);
+
+router.get(`/${path}/searchBy/idCompetition/:idCompetition/idJudge/:idJudge/idMC1/:idMC1/idMC2/:idMC2`,
+getVoteIdCompetitionIdjudgeIdMC1IdMC2);
+
 
 router.post(`/${path}`, createVote);
 

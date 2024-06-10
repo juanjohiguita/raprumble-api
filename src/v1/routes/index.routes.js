@@ -6,7 +6,7 @@ const router = Router()
 
 router.get("/ping", ping);
 
-router.get(`/login`,
+router.post(`/login`,
 loginUser); 
 
 export default router
