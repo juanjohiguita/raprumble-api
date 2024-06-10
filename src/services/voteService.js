@@ -18,6 +18,16 @@ class voteservice {
             throw new Error("Error fetching vote");
         }
     }
+    
+    async getAllVotesBattle (idCompetition, idMC1, idMC2) {
+        try {
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE idCompetition = ? AND ((idMC1 = ? AND idMC2 = ?) OR (idMC1 = ? AND idMC2 = ?))", 
+            [idCompetition, idMC1, idMC2, idMC2, idMC1]);
+            return rows;
+        } catch (error) {
+            throw new Error("Error fetching vote");
+        }    
+    }
 
     async getVotesByIdCompetitionAndIdDay (idCompetition, idDay) {
         try {
