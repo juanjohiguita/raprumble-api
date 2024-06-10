@@ -29,6 +29,15 @@ class voteservice {
         }    
     }
 
+    async getAllVotesDay (idCompetition, idDay) {
+        try {
+            const [rows] = await pool.query("SELECT LEAST(idMC1, idMC2) as mc1, GREATEST(idMC1, idMC2) as mc2, SUM(scoreMC1) as totalScoreMC1, SUM(scoreMC2) as totalScoreMC2 FROM votes WHERE idCompetition = ? AND idDay = ? GROUP BY mc1, mc2",
+            [idCompetition, idDay]);
+            return rows;
+        } catch (error) {
+            throw new Error("Error fetching vote");
+        }
+    }
     async getVotesByIdCompetitionAndIdDay (idCompetition, idDay) {
         try {
             const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes WHERE idCompetition = ? AND idDay = ?", [idCompetition, idDay]);

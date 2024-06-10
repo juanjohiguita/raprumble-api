@@ -24,6 +24,20 @@ export const getAllVotesBattle = async (req, res) => {
     }
 }
 
+
+export const getAllVotesDay = async (req, res) => {
+    const idCompetition = req.params.idCompetition;  
+    const idDay = req.params.idDay;
+    try {
+        const votes = await voteService.getAllVotesDay(idCompetition, idDay);
+        if (votes.length <= 0) return res.status(404).json({ message: "Vote not found" });
+        res.status(200).json(votes);
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error in the server" });
+    }
+
+}
+
 export const getVote = async (req, res) => {
     const id = req.params.id;   
     try {
