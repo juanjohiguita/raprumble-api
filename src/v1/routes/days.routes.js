@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import { getDay, getDays, createDay, updateDayFinish, deleteDay, updateDayAllInformation, getCountDaysByCompetition } from '../../controllers/daysController.js'; 
+import { getDay, getDays, createDay, updateDayFinish,updateDayEnable, deleteDay, updateDayAllInformation, getCountDaysByCompetition } from '../../controllers/daysController.js'; 
 import {ping} from '../../controllers/indexController.js';
 import DaysMiddleware from '../../middleware/daysMiddleware.js';
 const path = 'days';
@@ -26,10 +26,13 @@ DaysMiddleware.validateDayAllUpdateFields,
 updateDayAllInformation);
 
 // El metodo patch permite actualizar solo una parte de los datos
-router.patch(`/${path}/:id`, 
+router.patch(`/${path}/:id/finish`, 
 DaysMiddleware.dayExists,
-DaysMiddleware.validateDayUpdateFields,
 updateDayFinish);
+
+router.patch(`/${path}/:id/enable`,
+DaysMiddleware.dayExists,
+updateDayEnable);
 
 
 router.delete(`/${path}/:id`, 

@@ -50,6 +50,17 @@ class dayService {
         }
     }
 
+    async updateDayEnable(id, enable) {
+        try {
+            // Actualizacion del atributo enable mediante un update
+            const [result] = await pool.query("UPDATE days SET enable = ? WHERE id = ?", [enable, id]);
+            return result.affectedRows > 0;
+        } catch (error) {
+            throw new Error("Error updating day");
+        }
+    }
+
+
     async updateDayAllInformation(id, idCompetition, numberDay, finish, enable ) {
         try {
             // Actualizacion de los atributos mediante un update

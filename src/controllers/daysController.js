@@ -4,7 +4,7 @@ export const getDays = async (req, res) => {
     try {
         const days = await dayService.getDays();
         if (days.length <= 0) {
-            return res.status(404).json({ message: "Días no encontrados" });
+            return res.status(404).json({ message: "Fechas no encontrados" });
         }
         res.json(days);
     } catch (error) {
@@ -17,7 +17,7 @@ export const getDay = async (req, res) => {
     try {
         const day = await dayService.getDay(id);
         if (!day) {
-            return res.status(404).json({ message: "Día no encontrado" });
+            return res.status(404).json({ message: "Fecha no encontrada" });
         }
         res.json(day);
     } catch (error) {
@@ -32,7 +32,7 @@ export const getCountDaysByCompetition = async (req, res) => {
     try {
         const day = await dayService.getCountDaysByCompetition(idCompetition);
         if (!day) {
-            return res.status(404).json({ message: "Día no encontrado" });
+            return res.status(404).json({ message: "Fecha no encontrada" });
         }
         res.json(day);
     } catch (error) {
@@ -44,7 +44,7 @@ export const createDay = async (req, res) => {
     const { idCompetition, numberDay, finish, enable } = req.body;
     try {
         const dayId = await dayService.createDay(idCompetition, numberDay, finish, enable);
-        res.status(201).json({ message: "Día creado", dayId });
+        res.status(201).json({ message: "Fecha creado", dayId });
     } catch (error) {
         res.status(500).json({ message: error.message || "Error en el servidor" });
     }
@@ -56,14 +56,33 @@ export const updateDayFinish = async (req, res) => {
     try {
         const success = await dayService.updateDayFinish(id, finish);
         if (!success) {
-            return res.status(404).json({ message: "Día no encontrado" });
+            return res.status(404).json({ message: "Fecha no encontrada" });
         }
         const updatedDay = await dayService.getDay(id);
-        return res.status(200).json({ message: `Día modificado con ID: ${id}`, updatedDay });
+        return res.status(200).json({ message: `Fecha modificado con ID: ${id}`, updatedDay });
     } catch (error) {
         res.status(500).json({ message: error.message || "Error en el servidor" });
     }
 };
+
+
+
+
+export const updateDayEnable = async (req, res) => {
+    const id = req.params.id;
+    const { enable } = req.body;
+    try {
+        const success = await dayService.updateDayEnable(id, enable);
+        if (!success) {
+            return res.status(404).json({ message: "Fecha no encontrada" });
+        }
+        const updatedDay = await dayService.getDay(id);
+        return res.status(200).json({ message: `Fecha modificado con ID: ${id}`, updatedDay });
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error en el servidor" });
+    }
+
+}
 
 export const updateDayAllInformation = async (req, res) => {
     const { id } = req.params;
@@ -72,10 +91,10 @@ export const updateDayAllInformation = async (req, res) => {
     try {
         const success = await dayService.updateDayAllInformation(id, idCompetition, numberDay, finish, enable);
         if (!success) {
-            return res.status(404).json({ message: "Día no encontrado" });
+            return res.status(404).json({ message: "Fecha no encontrada" });
         }
         const updatedDay = await dayService.getDay(id);
-        return res.status(200).json({ message: `Día modificado con ID: ${id}`, updatedDay });
+        return res.status(200).json({ message: `Fecha modificado con ID: ${id}`, updatedDay });
     } catch (error) {
         res.status(500).json({ message: error.message || "Error en el servidor" });
     }
@@ -86,9 +105,9 @@ export const deleteDay = async (req, res) => {
     try {
         const success = await dayService.deleteDay(id);
         if (!success) {
-            return res.status(404).json({ message: "Día no encontrado" });
+            return res.status(404).json({ message: "Fecha no encontrada" });
         }
-        res.json({ message: "Día eliminado" });
+        res.json({ message: "Fecha eliminado" });
     } catch (error) {
         res.status(500).json({ message: error.message || "Error en el servidor" });
     }
