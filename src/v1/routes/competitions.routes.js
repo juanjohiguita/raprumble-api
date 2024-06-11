@@ -66,7 +66,6 @@ router.get(`/${path}`, getCompetitions);
  *         description: No se encontró la competición con el ID proporcionado
  */
 router.get(`/${path}/:id`, 
-CompetitionsMiddleware.competitionExists,
 getCompetition);
 
 /**
@@ -101,16 +100,13 @@ getCompetition);
  *       404:    
  *          description: No se encontró la competición con el ID proporcionado 
  */
-router.get(`/${path}/:id/members/aka/score/ptb`, 
-CompetitionsMiddleware.competitionExists,   
+router.get(`/${path}/:id/members/aka/score/ptb`,  
 getCompetitionMembersAkaScoreAndPtb);
 
-router.get(`/${path}/:id/competitors/aka/score/ptb`, 
-CompetitionsMiddleware.competitionExists,   
+router.get(`/${path}/:id/competitors/aka/score/ptb`,   
 getCompetitionCompetitorsAkaScoreAndPtb);
 
 router.get(`/${path}/:id/members/aka/roleId/roleName/userId/memberId`, 
-CompetitionsMiddleware.competitionExists,   
 getCompetitionMembersAkaRoleNameRoleIdUserIdAndMemberId);
 
 /**
