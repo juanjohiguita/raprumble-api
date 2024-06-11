@@ -19,6 +19,16 @@ class dayService {
         }
     }
 
+
+    async getDayByCompetitionAndNumberDay (idCompetition, numberDay) {
+        try {
+            const [rows] = await pool.query("SELECT id, idCompetition, numberDay, finish, enable FROM days WHERE idCompetition = ? AND numberDay = ?", [idCompetition, numberDay]);
+            return rows[0];
+        } catch (error) {
+            throw new Error("Error fetching day");
+        }
+    }
+
     async getCountDaysByCompetition (idCompetition) {
         try {
             const [rows] = await pool.query("SELECT COUNT(*) AS daysCount FROM days WHERE finish = 1 AND idCompetition = ?", [idCompetition]);
