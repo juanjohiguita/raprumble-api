@@ -28,6 +28,17 @@ class competitionService {
         }
     }
 
+    async getCompetitionCompetitorsAkaScoreAndPtb (id) {
+        try {
+            const [rows] = await pool.query("SELECT u.aka, m.score, m.ptb FROM users u JOIN members m ON u.id = m.idUserMember JOIN roles r ON m.idRole = r.id WHERE m.idCompetitionMember = ? AND r.name = 'competidor';", [id]);
+            return rows;
+        } catch (error) {
+            throw new Error("Error fetching competition");
+        }
+    }
+
+    
+
     async getCompetitionMembersAkaRoleNameRoleIdUserIdAndMemberId (idCompetition) {
         try {
             const [rows] = await pool.query("SELECT u.aka, m.idRole, r.name AS roleName, m.idUserMember AS idUser, m.id AS idMember, m.idCompetitionMember AS idCompetition FROM users u JOIN members m ON u.id = m.idUserMember JOIN roles r ON m.idRole = r.id WHERE m.idCompetitionMember = ?;", [idCompetition]);

@@ -38,6 +38,20 @@ export const getCompetitionMembersAkaScoreAndPtb = async (req, res) => {
     }
 };
 
+export const getCompetitionCompetitorsAkaScoreAndPtb = async (req, res) => {
+    const id = req.params.id;
+    try {
+        const members = await competitionService.getCompetitionCompetitorsAkaScoreAndPtb(id);
+        if (!members) {
+            return res.status(404).json({ message: "Competición no encontrado" });
+        }
+        res.json(members);
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error en el servidor" });
+    }
+};
+
+
 export const getCompetitionMembersAkaRoleNameRoleIdUserIdAndMemberId = async (req, res) => {
     const idCompetition = req.params.id;
     try {
