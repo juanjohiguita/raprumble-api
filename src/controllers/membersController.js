@@ -51,11 +51,11 @@ export const createMember = async (req, res) => {
     }
 };
 
-export const updateMemberPtb = async (req, res) => {
+export const updateMemberPtbAndScore = async (req, res) => {
     const id = req.params.id;
-    const { ptb } = req.body; 
+    const { ptb, score } = req.body; 
     try {
-        const success = await memberService.updateMemberPtb(id, ptb);
+        const success = await memberService.updateMemberPtbAndScore(id, ptb, score);
         if (!success) {
             return res.status(404).json({ message: "Member not found" });
         }

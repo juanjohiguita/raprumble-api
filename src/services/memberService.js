@@ -38,9 +38,9 @@ class memberService {
         }
     }
 
-    async updateMemberPtb(id, ptb) {
+    async updateMemberPtbAndScore(id, ptb, score) {
         try {
-            const [result] = await pool.query("UPDATE members SET ptb = ? WHERE id = ?", [ptb, id]);
+            const [result] = await pool.query("UPDATE members SET ptb = ?, score = ? WHERE id = ?", [ptb, score, id]);
             return result.affectedRows > 0;
         } catch (error) {
             throw new Error("Error updating member");
