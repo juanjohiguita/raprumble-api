@@ -59,6 +59,17 @@ class userService {
         }
     }
 
+    async updateUserProfilePicture(id, profilePicture) {
+        try {
+            // Actualizacion del atributo profilePicture mediante un update
+            const [result] = await pool.query("UPDATE users SET profilePicture = ? WHERE id = ?", [profilePicture, id]);
+            return result.affectedRows > 0;
+
+        } catch (error) {
+            throw new Error(error.message || "Error updating user");
+        }
+    }
+
     async updateUserAllInformation(id, username, password, email, aka, profilePicture) {
         try {
             // Actualización de los atributos mediante un update

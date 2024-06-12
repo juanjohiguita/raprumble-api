@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {getUser, getUsers, createUser, deleteUser, updateUserAka, updateUserAllInformation, getUserByUsername, getUserByEmail, loginUser} from '../../controllers/usersController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
+import {getUser, getUsers, createUser, deleteUser, updateUserAka, updateUserAllInformation, getUserByUsername, getUserByEmail, updateUserProfilePicture} from '../../controllers/usersController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
 import {ping} from '../../controllers/indexController.js';
 import UsersMiddleware from '../../middleware/usersMiddleware.js';
 const path = 'users';
@@ -33,6 +33,11 @@ router.patch(`/${path}/:id`,
 UsersMiddleware.userExists,
 UsersMiddleware.validateUserUpdateFields,
 updateUserAka);
+
+router.patch(`/${path}/:id/profilePicture`, 
+UsersMiddleware.userExists,
+UsersMiddleware.validateUserUpdateFields,
+updateUserProfilePicture);
 
 
 router.delete(`/${path}/:id`, 

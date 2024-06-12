@@ -131,3 +131,17 @@ export const updateUserAka = async (req, res) => {
     }
 };
 
+export const updateUserProfilePicture = async (req, res) => {
+    const id = req.params.id;
+    const { profilePicture } = req.body;
+    try {
+        const success = await userService.updateUserProfilePicture(id, profilePicture );
+        if (!success) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        const updatedUser = await userService.getUser(id);
+        res.json({ message: `User modified with ID: ${id}`, user: updatedUser });
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error in the server" });
+    }
+}
