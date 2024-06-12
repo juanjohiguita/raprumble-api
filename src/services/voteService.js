@@ -97,7 +97,8 @@ class voteservice {
 
     async getVoteIdCompetitionIdjudgeIdMC1IdMC2 (idCompetition, idJudge, idMC1, idMC2) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik FROM votes WHERE idCompetition = ? AND idJudge = ? AND idMC1 = ? AND idMC2 = ?", [idCompetition, idJudge, idMC1, idMC2]);   
+            const [rows] = await pool.query(`SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik FROM votes WHERE idCompetition = ? AND idJudge = ? AND ((idMC1 = ? AND idMC2 = ?) OR (idMC1 = ? AND idMC2 = ?))`,
+                 [idCompetition, idJudge, idMC1, idMC2, idMC2, idMC1]);   
             return rows;
         } catch (error) {
             throw new Error(error.message || "Error fetching vote");
