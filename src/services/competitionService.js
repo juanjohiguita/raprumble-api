@@ -21,7 +21,7 @@ class competitionService {
 
     async getCompetitionMembersAkaScoreAndPtb (id) {
         try {
-            const [rows] = await pool.query("SELECT aka, score, ptb FROM users u JOIN members m ON u.id = m.idUserMember WHERE m.idCompetitionMember = ?;", [id]);
+            const [rows] = await pool.query("SELECT aka, score, ptb, FROM users u JOIN members m ON u.id = m.idUserMember WHERE m.idCompetitionMember = ?;", [id]);
             return rows;
         } catch (error) {
             throw new Error(error.message || "Error fetching competition");
@@ -30,7 +30,7 @@ class competitionService {
 
     async getCompetitionCompetitorsAkaScoreAndPtb (id) {
         try {
-            const [rows] = await pool.query("SELECT u.aka, m.score, m.ptb FROM users u JOIN members m ON u.id = m.idUserMember JOIN roles r ON m.idRole = r.id WHERE m.idCompetitionMember = ? AND r.name = 'competidor';", [id]);
+            const [rows] = await pool.query("SELECT u.aka, m.score, m.ptb, m.id AS idMember FROM users u JOIN members m ON u.id = m.idUserMember JOIN roles r ON m.idRole = r.id WHERE m.idCompetitionMember = ? AND r.name = 'competidor';", [id]);
             return rows;
         } catch (error) {
             throw new Error(error.message || "Error fetching competition");
