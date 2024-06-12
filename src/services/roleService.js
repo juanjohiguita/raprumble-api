@@ -6,7 +6,7 @@ class roleService {
             const [rows] = await pool.query("SELECT id, name FROM roles;");
             return rows;
         } catch (error) {
-            throw new Error("Error fetching roles");
+            throw new Error(error.message || "Error fetching roles");
         }
     }
 
@@ -15,7 +15,7 @@ class roleService {
             const [rows] = await pool.query("SELECT id, name  FROM roles WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching role");
+            throw new Error(error.message || "Error fetching role");
         }
     }
 
@@ -24,7 +24,7 @@ class roleService {
             const [result] = await pool.query("INSERT INTO roles(name) VALUES (?, ?)", [name]);
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating role");
+            throw new Error(error.message || "Error creating role");
         }
     }
 
@@ -34,7 +34,7 @@ class roleService {
             console.log(result);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating role");
+            throw new Error(error.message || "Error updating role");
         }
     }
 
@@ -43,7 +43,7 @@ class roleService {
             const [result] = await pool.query("UPDATE roles SET name = ? WHERE id = ?", [name, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating role");
+            throw new Error(error.message || "Error updating role");
         }
     }
 
@@ -52,7 +52,7 @@ class roleService {
             const [result] = await pool.query("DELETE FROM roles WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error deleting role");
+            throw new Error(error.message || "Error deleting role");
         }
     }
 }

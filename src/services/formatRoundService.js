@@ -6,7 +6,7 @@ class formatsRoundsService {
             const [rows] = await pool.query("SELECT id, idFormat, idRound FROM formats_rounds");
             return rows;
         } catch (error) {
-            throw new Error("Error fetching formats_rounds");
+            throw new Error(error.message || "Error fetching formats_rounds");
         }
     }
 
@@ -16,7 +16,7 @@ class formatsRoundsService {
             console.log(rows);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching formatsRounds");
+            throw new Error(error.message || "Error fetching formatsRounds");
         }
     }
 
@@ -25,7 +25,7 @@ class formatsRoundsService {
             const [result] = await pool.query("INSERT INTO formats_rounds(idFormat, idRound) VALUES (?, ?)", [idFormat, idRound]);
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating formatsRounds");
+            throw new Error(error.message || "Error creating formatsRounds");
         }
     }
 
@@ -35,7 +35,7 @@ class formatsRoundsService {
             console.log(result);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating formatsRounds");
+            throw new Error(error.message || "Error updating formatsRounds");
         }
     }
 
@@ -44,7 +44,7 @@ class formatsRoundsService {
             const [result] = await pool.query("UPDATE formats_rounds SET idFormat = ?, idRound = ? WHERE id = ?", [idFormat, idRound, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating formatsRounds");
+            throw new Error(error.message || "Error updating formatsRounds");
         }
     }
 
@@ -53,7 +53,7 @@ class formatsRoundsService {
             const [result] = await pool.query("DELETE FROM formats_rounds WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error deleting formatsRounds");
+            throw new Error(error.message || "Error deleting formatsRounds");
         }
     }
 }

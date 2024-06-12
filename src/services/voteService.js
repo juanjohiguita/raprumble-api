@@ -6,7 +6,7 @@ class voteservice {
             const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes");
             return rows;
         } catch (error) {
-            throw new Error("Error fetching votes");
+            throw new Error(error.message || "Error fetching votes");
         }
     }
 
@@ -15,7 +15,7 @@ class voteservice {
             const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching vote");
+            throw new Error(error.message || "Error fetching vote");
         }
     }
     
@@ -25,7 +25,7 @@ class voteservice {
             [idCompetition, idMC1, idMC2, idMC2, idMC1]);
             return rows;
         } catch (error) {
-            throw new Error("Error fetching vote");
+            throw new Error(error.message || "Error fetching vote");
         }    
     }
 
@@ -35,7 +35,7 @@ class voteservice {
             [idCompetition, idDay]);
             return rows;
         } catch (error) {
-            throw new Error("Error fetching vote");
+            throw new Error(error.message || "Error fetching vote");
         }
     }
     async getVotesByIdCompetitionAndIdDay (idCompetition, idDay) {
@@ -43,7 +43,7 @@ class voteservice {
             const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE idCompetition = ? AND idDay = ?", [idCompetition, idDay]);
             return rows;
         } catch (error) {
-            throw new Error("Error fetching vote");
+            throw new Error(error.message || "Error fetching vote");
         }
     }
 
@@ -52,7 +52,7 @@ class voteservice {
             const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE idCompetition = ? AND idJudge = ? AND idMC1 = ? AND idMC2 = ?", [idCompetition, idJudge, idMC1, idMC2]);   
             return rows;
         } catch (error) {
-            throw new Error("Error fetching vote");
+            throw new Error(error.message || "Error fetching vote");
         }
     }
 

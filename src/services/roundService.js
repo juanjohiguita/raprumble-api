@@ -6,7 +6,7 @@ class roundService {
             const [rows] = await pool.query("SELECT id, name, numberPatterns FROM rounds;");
             return rows;
         } catch (error) {
-            throw new Error("Error fetching rounds");
+            throw new Error(error.message || "Error fetching rounds");
         }
     }
 
@@ -15,7 +15,7 @@ class roundService {
             const [rows] = await pool.query("SELECT id, name, numberPatterns FROM rounds WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching round");
+            throw new Error(error.message || "Error fetching round");
         }
     }
 
@@ -24,7 +24,7 @@ class roundService {
             const [result] = await pool.query("INSERT INTO rounds (name, numberPatterns) VALUES (?, ?)", [name, numberPatterns]);
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating round");
+            throw new Error(error.message || "Error creating round");
         }
     }
 
@@ -34,7 +34,7 @@ class roundService {
             console.log(result);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating round");
+            throw new Error(error.message || "Error updating round");
         }
     }
 
@@ -43,7 +43,7 @@ class roundService {
             const [result] = await pool.query("UPDATE rounds SET name = ?, numberPatterns = ? WHERE id = ?", [name, numberPatterns, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating round");
+            throw new Error(error.message || "Error updating round");
         }
     }
 
@@ -52,7 +52,7 @@ class roundService {
             const [result] = await pool.query("DELETE FROM rounds WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error deleting round");
+            throw new Error(error.message || "Error deleting round");
         }
     }
 }

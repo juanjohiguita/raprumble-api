@@ -6,7 +6,7 @@ class userService {
             const [rows] = await pool.query("SELECT id, username, password, email, aka, profilePicture FROM users");
             return rows;
         } catch (error) {
-            throw new Error("Error fetching users");
+            throw new Error(error.message || "Error fetching users");
         }
     }
 
@@ -15,7 +15,7 @@ class userService {
             const [rows] = await pool.query("SELECT id, username, email, aka, profilePicture FROM users WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching user");
+            throw new Error(error.message || "Error fetching user");
         }
     }
 
@@ -24,7 +24,7 @@ class userService {
             const [rows] = await pool.query("SELECT id, username, email, aka, profilePicture FROM users WHERE username = ?", [username]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching user");
+            throw new Error(error.message || "Error fetching user");
         }
     }
     
@@ -33,7 +33,7 @@ class userService {
             const [rows] = await pool.query("SELECT id, password, username, email, aka, profilePicture FROM users WHERE email = ?", [email]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching user");
+            throw new Error(error.message || "Error fetching user");
         }
     }
 
@@ -44,7 +44,7 @@ class userService {
             const [result] = await pool.query("INSERT INTO users (username, password, email, aka, profilePicture) VALUES (?, ?, ?, ?, ?)", [username, password, email, aka, profilePicture]);
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating user");
+            throw new Error(error.message || "Error creating user");
         }
     }
 
@@ -55,7 +55,7 @@ class userService {
             return result.affectedRows > 0;
 
         } catch (error) {
-            throw new Error("Error updating user");
+            throw new Error(error.message || "Error updating user");
         }
     }
 
@@ -68,7 +68,7 @@ class userService {
             );
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating user");
+            throw new Error(error.message || "Error updating user");
         }
     }
     

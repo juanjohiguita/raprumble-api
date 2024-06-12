@@ -6,7 +6,7 @@ class memberService {
             const [rows] = await pool.query("SELECT id, idUserMember, idCompetitionMember, idRole, score, ptb FROM members");
             return rows;
         } catch (error) {
-            throw new Error("Error fetching members");
+            throw new Error(error.message || "Error fetching members");
         }
     }
 
@@ -15,7 +15,7 @@ class memberService {
             const [rows] = await pool.query("SELECT id, idUserMember, idCompetitionMember, idRole, score, ptb FROM members WHERE idUserMember = ?", [idUser]);
             return rows;
         } catch (error) {
-            throw new Error("Error fetching members");
+            throw new Error(error.message || "Error fetching members");
         }
     }
     
@@ -25,16 +25,39 @@ class memberService {
             const [rows] = await pool.query("SELECT id, idUserMember, idCompetitionMember, idRole, score, ptb FROM members WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
-            throw new Error("Error fetching member");
+            throw new Error(error.message || "Error fetching member");
         }
     }
 
     async createMember(idUserMember, idCompetitionMember, idRole, score, ptb) {
         try {
-            const [result] = await pool.query("INSERT INTO members(idUserMember, idCompetitionMember, idRole, score, ptb) VALUES (?, ?,?,?,?)", [idUserMember, idCompetitionMember, idRole, score, ptb]);
+            const listMembers = await this.getUserMembers(idUserMember);
+            let roleCount = 0;
+            let hasJudgeRole = false;
+    
+            // Check the existing roles for this user in the same competition
+            for (const member of listMembers) {
+                if (member.idCompetitionMember === idCompetitionMember) {
+                    roleCount++;
+                    if (member.idRole === 2) {
+                        hasJudgeRole = true;
+                    }
+                }
+            }
+            // Validation only max 2 roles
+            if (roleCount >= 2) {
+                throw new Error("User cannot have more than two roles in the same competition");
+            }
+            // Validation if a user is member like judge cant create a member like competitor
+            if (hasJudgeRole && idRole === 3) {
+                throw new Error("User cannot be a competitor if they are already a judge in the same competition");
+            }
+    
+            // Insert the new member if validations pass
+            const [result] = await pool.query("INSERT INTO members(idUserMember, idCompetitionMember, idRole, score, ptb) VALUES (?, ?, ?, ?, ?)", [idUserMember, idCompetitionMember, idRole, score, ptb]);
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating member");
+            throw new Error(error.message || "Error creating member");
         }
     }
 
@@ -43,7 +66,7 @@ class memberService {
             const [result] = await pool.query("UPDATE members SET ptb = ?, score = ? WHERE id = ?", [ptb, score, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating member");
+            throw new Error(error.message || "Error updating member");
         }
     }
 
@@ -52,7 +75,7 @@ class memberService {
             const [result] = await pool.query("UPDATE members SET idRole = ? WHERE id = ?", [idRole, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating member");
+            throw new Error(error.message || "Error updating member");
         }
     }
 
@@ -63,7 +86,7 @@ class memberService {
             const [result] = await pool.query("UPDATE members SET idUserMember = ?, idCompetitionMember = ?, idRole = ?, score = ?, ptb = ? WHERE id = ?", [idUserMember, idCompetitionMember, idRole, score, ptb, id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error updating member");
+            throw new Error(error.message || "Error updating member");
         }
     }
 
@@ -72,7 +95,7 @@ class memberService {
             const [result] = await pool.query("DELETE FROM members WHERE id = ?", [id]);
             return result.affectedRows > 0;
         } catch (error) {
-            throw new Error("Error deleting member");
+            throw new Error(error.message || "Error deleting member");
         }
     }
 }
