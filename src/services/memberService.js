@@ -34,6 +34,7 @@ class memberService {
             const listMembers = await this.getUserMembers(idUserMember);
             let roleCount = 0;
             let hasJudgeRole = false;
+            let hasCompetitorRole = false;
     
             // Check the existing roles for this user in the same competition
             for (const member of listMembers) {
@@ -41,6 +42,9 @@ class memberService {
                     roleCount++;
                     if (member.idRole === 2) {
                         hasJudgeRole = true;
+                    }
+                    if(member.idRole === 3){
+                        hasCompetitorRole = true; 
                     }
                 }
             }
@@ -51,6 +55,10 @@ class memberService {
             // Validation if a user is member like judge cant create a member like competitor
             if (hasJudgeRole && idRole === 3) {
                 throw new Error("User cannot be a competitor if they are already a judge in the same competition");
+            }
+
+            if (hasCompetitorRole && idRole === 2){
+                throw new Error("User cannot be a judge if they are already a competitor in the same competition")
             }
     
             // Insert the new member if validations pass
