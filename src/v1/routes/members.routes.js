@@ -26,12 +26,10 @@ updateMemberAllInformation);
 // El metodo patch permite actualizar solo una parte de los datos
 router.patch(`/${path}/:id/ptb/score`, 
 MembersMiddleware.memberExists,
-MembersMiddleware.validateMemberUpdateFields,
 updateMemberPtbAndScore);
 
 router.patch(`/${path}/:id/idRole`, 
 MembersMiddleware.memberExists,
-MembersMiddleware.validateMemberUpdateFields,
 updateMemberIdRole);
 
 

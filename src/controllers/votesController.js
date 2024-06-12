@@ -80,9 +80,9 @@ export const getVoteIdCompetitionIdjudgeIdMC1IdMC2 = async (req, res) => {
 
 
 export const createVote = async (req, res) => {
-    const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner } = req.body;
+    const { idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik } = req.body;
     try {
-        const voteId = await voteService.createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner);
+        const voteId = await voteService.createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik);
         res.status(201).json({ message: "Vote created", voteId });
     } catch (error) {
         res.status(500).json({ message: error.message || "Error in the server" });

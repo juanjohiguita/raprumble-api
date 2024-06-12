@@ -1,9 +1,10 @@
 import { pool } from "../config/db.js";
+import memberService from "./memberService.js";
 
 class voteservice {
     async getVotes() {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2 FROM votes");
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik FROM votes");
             return rows;
         } catch (error) {
             throw new Error(error.message || "Error fetching votes");
@@ -12,7 +13,7 @@ class voteservice {
 
     async getVote (id) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE id = ?", [id]);
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik FROM votes WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
             throw new Error(error.message || "Error fetching vote");
@@ -21,7 +22,7 @@ class voteservice {
     
     async getAllVotesBattle (idCompetition, idMC1, idMC2) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE idCompetition = ? AND ((idMC1 = ? AND idMC2 = ?) OR (idMC1 = ? AND idMC2 = ?))", 
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik FROM votes WHERE idCompetition = ? AND ((idMC1 = ? AND idMC2 = ?) OR (idMC1 = ? AND idMC2 = ?))", 
             [idCompetition, idMC1, idMC2, idMC2, idMC1]);
             return rows;
         } catch (error) {
@@ -31,7 +32,7 @@ class voteservice {
 
     async getAllVotesDay (idCompetition, idDay) {
         try {
-            const [rows] = await pool.query("SELECT LEAST(idMC1, idMC2) as mc1, GREATEST(idMC1, idMC2) as mc2, SUM(scoreMC1) as totalScoreMC1, SUM(scoreMC2) as totalScoreMC2 FROM votes WHERE idCompetition = ? AND idDay = ? GROUP BY mc1, mc2",
+            const [rows] = await pool.query("SELECT LEAST(idMC1, idMC2) as mc1, GREATEST(idMC1, idMC2) as mc2, SUM(scoreMC1) as totalScoreMC1, SUM(scoreMC2) as totalScoreMC2, winner, replik FROM votes WHERE idCompetition = ? AND idDay = ? GROUP BY mc1, mc2",
             [idCompetition, idDay]);
             return rows;
         } catch (error) {
@@ -40,7 +41,7 @@ class voteservice {
     }
     async getVotesByIdCompetitionAndIdDay (idCompetition, idDay) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE idCompetition = ? AND idDay = ?", [idCompetition, idDay]);
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik FROM votes WHERE idCompetition = ? AND idDay = ?", [idCompetition, idDay]);
             return rows;
         } catch (error) {
             throw new Error(error.message || "Error fetching vote");
@@ -49,7 +50,7 @@ class voteservice {
 
     async getVoteIdCompetitionIdjudgeIdMC1IdMC2 (idCompetition, idJudge, idMC1, idMC2) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner FROM votes WHERE idCompetition = ? AND idJudge = ? AND idMC1 = ? AND idMC2 = ?", [idCompetition, idJudge, idMC1, idMC2]);   
+            const [rows] = await pool.query("SELECT id, idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik FROM votes WHERE idCompetition = ? AND idJudge = ? AND idMC1 = ? AND idMC2 = ?", [idCompetition, idJudge, idMC1, idMC2]);   
             return rows;
         } catch (error) {
             throw new Error(error.message || "Error fetching vote");
@@ -59,12 +60,100 @@ class voteservice {
 
     
 
-    async createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner) {
+    async createVote(idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik) {
         try {
-            const [result] = await pool.query("INSERT INTO votes (idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner) VALUES (?, ?, ?, ?, ?, ?, ?, ?)", [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner]);
+
+            // Verificacion si ya existe un voto de ese mismo juez, en la misma jornada, en la misma competicion entre los mismos MCs
+            const [existingVote] = await pool.query(
+                `SELECT * FROM votes 
+                 WHERE idCompetition = ? 
+                   AND idDay = ? 
+                   AND idJudge = ?
+                   AND ((idMC1 = ? AND idMC2 = ?) OR (idMC1 = ? AND idMC2 = ?))`,
+                [idCompetition, idDay, idJudge, idMC1, idMC2, idMC2, idMC1]
+            );
+            
+            if (existingVote.length > 0) {
+                throw new Error("Vote already exists for this competition, day, and judge between these MCs.");
+            }
+
+            // 
+            const [result] = await pool.query("INSERT INTO votes (idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)", [idCompetition, idMC1, idMC2, idJudge, idDay, scoreMC1, scoreMC2, winner, replik]);
+            // Verificar si ya hay mas de 3 votaciones para esa batalla especifica para esa competicion en ese day entre los dos mcs
+            // y si es asi, coger en una "lista" esas votaciones donde se enfrentan el mc1 y el mc2 sin importar cual sea el orden
+            // y sumar los score y ptb RESPECTIVOS de cada uno para esas votaciones y luego llamar al patch en members de ptb y score pasandole el id del 
+            // mimebro o sea el idMC, lo cual actualizaria los campos
+
+            //Verificacion si hay mas de 3 votaciones para la misma batalla
+            const [votes] = await pool.query(
+                `SELECT * FROM votes 
+                WHERE idCompetition = ? 
+                AND idDay = ? 
+                AND ((idMC1 = ? AND idMC2 = ?) OR (idMC1 = ? AND idMC2 = ?))`, 
+                [idCompetition, idDay, idMC1, idMC2, idMC2, idMC1]
+            );
+            if (votes.length >= 3) {
+                // Inicializar variables para los score y las victorias y replicas para luego calcular el ptb
+                let totalScoreMC1 = 0;
+                let totalScoreMC2 = 0;
+
+                let mc1DirectWins = 0;
+                let mc2DirectWins = 0;
+                let mc1ReplikWins = 0;
+                let mc2ReplikWins = 0;
+    
+                // Calcular los puntajes y las victorias sean directas o por replik
+                votes.forEach(vote => {
+                    if (vote.idMC1 === idMC1) {
+                        totalScoreMC1 += vote.scoreMC1;
+                    } else {
+                        totalScoreMC1 += vote.scoreMC2;
+                    }
+    
+                    if (vote.idMC2 === idMC2) {
+                        totalScoreMC2 += vote.scoreMC2;
+                    } else {
+                        totalScoreMC2 += vote.scoreMC1;
+                    }
+    
+                    if (vote.winner === idMC1) {
+                        if (vote.replik === 0) {
+                            mc1DirectWins++;
+                        } else {
+                            mc1ReplikWins++;
+                        }
+                    } else if (vote.winner === idMC2) {
+                        if (vote.replik === 0) {
+                            mc2DirectWins++;
+                        } else {
+                            mc2ReplikWins++;
+                        }
+                    }
+                });
+
+                // Calcular el ptb para cada MC basado en la mayoría
+                let ptbMC1 = 0;
+                let ptbMC2 = 0;
+
+                if (mc1DirectWins > mc1ReplikWins && mc1DirectWins > mc2DirectWins && mc1DirectWins > mc2ReplikWins) {
+                    ptbMC1 = 3;
+                } else if (mc1ReplikWins > mc1DirectWins && mc1ReplikWins > mc2DirectWins && mc1ReplikWins > mc2ReplikWins) {
+                    ptbMC1 = 2;
+                    ptbMC2 = 1;
+                } else if (mc2DirectWins > mc1DirectWins && mc2DirectWins > mc1ReplikWins && mc2DirectWins > mc2ReplikWins) {
+                    ptbMC2 = 3;
+                } else if (mc2ReplikWins > mc1DirectWins && mc2ReplikWins > mc1ReplikWins && mc2ReplikWins > mc2DirectWins) {
+                    ptbMC2 = 2;
+                    ptbMC1 = 1;
+                }
+    
+                // Actualizar los puntajes y ptb de los miembros
+                await memberService.updateMemberPtbAndScore(idMC1, ptbMC1, totalScoreMC1);
+                await memberService.updateMemberPtbAndScore(idMC2, ptbMC2, totalScoreMC2);
+            }
             return result.insertId;
         } catch (error) {
-            throw new Error("Error creating vote");
+            throw new Error(error.message || "Error creating vote");
         }
     }
 
