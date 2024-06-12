@@ -21,7 +21,7 @@ class competitionService {
 
     async getCompetitionMembersAkaScoreAndPtb (id) {
         try {
-            const [rows] = await pool.query("SELECT u.aka, m.score, m.ptb, FROM users u JOIN members m ON u.id = m.idUserMember WHERE m.idCompetitionMember = ?;", [id]);
+            const [rows] = await pool.query("SELECT u.aka, m.score, m.ptb FROM users u JOIN members m ON u.id = m.idUserMember WHERE m.idCompetitionMember = ?;", [id]);
             return rows;
         } catch (error) {
             throw new Error(error.message || "Error fetching competition");
