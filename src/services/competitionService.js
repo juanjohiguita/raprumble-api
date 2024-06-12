@@ -3,7 +3,7 @@ import { pool } from "../config/db.js";
 class competitionService {
     async getCompetitions() {
         try {
-            const [rows] = await pool.query("SELECT id, idFormat, name, numberJudges, numberCompetitors, numberDays FROM Competitions");
+            const [rows] = await pool.query("SELECT id, idFormat, name, numberJudges, numberCompetitors, numberDays FROM competitions");
             return rows;
         } catch (error) {
             throw new Error(error.message || "Error fetching competitions");
@@ -12,7 +12,7 @@ class competitionService {
 
     async getCompetition (id) {
         try {
-            const [rows] = await pool.query("SELECT id, idFormat, name, numberJudges, numberCompetitors, numberDays FROM Competitions WHERE id = ?", [id]);
+            const [rows] = await pool.query("SELECT id, idFormat, name, numberJudges, numberCompetitors, numberDays FROM competitions WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
             throw new Error(error.message || "Error fetching competition");

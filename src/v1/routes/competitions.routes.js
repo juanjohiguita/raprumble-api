@@ -10,7 +10,7 @@ const router = Router();
 /**
  * @swagger
  * tags:
- *   name: Competitions
+ *   name: competitions
  *   description: Endpoints para operaciones relacionadas con competiciones
  */
 
@@ -20,7 +20,7 @@ const router = Router();
  * /api/v1/competitions:
  *   get:
  *     summary: Obtener todas las competiciones
- *     tags: [Competitions]
+ *     tags: [competitions]
  *     responses:
  *       '200':
  *         description: Competiciones obtenidas exitosamente
@@ -44,7 +44,7 @@ router.get(`/${path}`, getCompetitions);
  * /api/v1/competitions/{id}:
  *   get:
  *     summary: Obtener una competición por su ID
- *     tags: [Competitions]
+ *     tags: [competitions]
  *     parameters:
  *       - in: path
  *         name: id
@@ -72,7 +72,7 @@ getCompetition);
  *   get:
  *     summary: Obtener los miembros de una competición con su aka y puntuación
  *     tags:
- *       - Competitions
+ *       - competitions
  *     parameters:
  *       - in: path
  *         name: id
