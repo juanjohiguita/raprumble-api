@@ -80,7 +80,21 @@ export const updateDayFinish = async (req, res) => {
 };
 
 
+export const updateDayLocation = async (req, res) => {
+    const id = req.params.id;
+    const { location } = req.body;
+    try {
+        const success = await dayService.updateDayLocation(id, location);
+        if (!success) {
+            return res.status(404).json({ message: "Fecha no encontrada" });
+        }
+        const updatedDay = await dayService.getDay(id);
+        return res.status(200).json({ message: `Fecha modificado con ID: ${id}`, updatedDay });
+    } catch (error) {
+        res.status(500).json({ message: error.message || "Error en el servidor" });
+    }
 
+}
 
 export const updateDayEnable = async (req, res) => {
     const id = req.params.id;

@@ -60,6 +60,17 @@ class dayService {
         }
     }
 
+
+    async updateDayLocation(id, location) {
+        try {
+            // Actualizacion del atributo location mediante un update
+            const [result] = await pool.query("UPDATE days SET location = ? WHERE id = ?", [location, id]);
+            return result.affectedRows > 0;
+        } catch (error) {
+            throw new Error(error.message || "Error updating day");
+        }
+    }
+
     async updateDayEnable(id, enable) {
         try {
             // Actualizacion del atributo enable mediante un update

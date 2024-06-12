@@ -1,6 +1,5 @@
 import {Router} from 'express';
-import { getDay, getDays, createDay, updateDayFinish,updateDayEnable,getDayByCompetitionAndNumberDay, deleteDay, updateDayAllInformation, getCountDaysByCompetition } from '../../controllers/daysController.js'; 
-import {ping} from '../../controllers/indexController.js';
+import { getDay, getDays, createDay, updateDayFinish,updateDayEnable,getDayByCompetitionAndNumberDay, deleteDay, updateDayAllInformation, updateDayLocation, getCountDaysByCompetition } from '../../controllers/daysController.js'; 
 import DaysMiddleware from '../../middleware/daysMiddleware.js';
 const path = 'days';
 
@@ -34,6 +33,10 @@ updateDayFinish);
 router.patch(`/${path}/:id/enable`,
 DaysMiddleware.dayExists,
 updateDayEnable);
+
+router.patch(`/${path}/:id/location`, 
+DaysMiddleware.dayExists,
+updateDayLocation);
 
 
 router.delete(`/${path}/:id`, 
