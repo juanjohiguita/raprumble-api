@@ -5,7 +5,6 @@ import UsersMiddleware from '../../middleware/usersMiddleware.js';
 const path = 'users';
 const router = Router();
 
-router.get(`/${path}/ping`, ping)
 
 router.get(`/${path}`, getUsers);
 

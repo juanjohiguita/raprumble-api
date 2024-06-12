@@ -7,9 +7,6 @@ const path = 'competitions';
 const router = Router();
 
 
-
-router.get(`/ping`, ping)
-
 /**
  * @swagger
  * tags:

@@ -6,7 +6,6 @@ import FormatsMiddleware from '../../middleware/formatsMiddleware.js';
 const path = 'formats'
 const router = Router();
 
-router.get(`/ping`, ping)
 
 router.get(`/${path}`, getFormats);
 

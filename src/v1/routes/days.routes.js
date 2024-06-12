@@ -6,8 +6,6 @@ const path = 'days';
 
 const router = Router();
 
-router.get(`/ping`, ping)
-
 router.get(`/${path}`, getDays);
 
 router.get(`/${path}/:id`, 

@@ -5,12 +5,10 @@ import VotesMiddleware from '../../middleware/votesMiddleware.js';
 const path = 'votes'
 const router = Router();
 
-router.get("/ping", ping)
-
 router.get(`/${path}`, getVotes);
 
 router.get(`/${path}/:id`, 
-VotesMiddleware.voteExists,
+VotesMiddleware.voteExists, 
 getVote);
 
 router.get(`/${path}/searchBy/idCompetition/:idCompetition/idDay/:idDay`,

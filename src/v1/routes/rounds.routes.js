@@ -6,7 +6,6 @@ import RoundsMiddleware from '../../middleware/roundsMiddleware.js';
 const path = 'rounds'; 
 const router = Router();
 
-router.get("/ping", ping)
 
 router.get(`/${path}`, getRounds);
 

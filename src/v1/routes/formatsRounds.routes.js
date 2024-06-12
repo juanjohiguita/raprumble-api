@@ -6,7 +6,6 @@ import FormatsRoundsMiddleware from '../../middleware/formatsRoundsMiddleware.js
 const path = 'formatsRounds'
 const router = Router();
 
-router.get(`/ping`, ping)
 
 router.get(`/${path}`, getFormatsRounds);
 

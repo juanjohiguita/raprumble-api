@@ -6,7 +6,6 @@ import MembersMiddleware from '../../middleware/membersMiddleware.js';
 const path = 'members'  
 const router = Router();
 
-router.get(`/ping`, ping)
 
 router.get(`/${path}`, getMembers);
 
