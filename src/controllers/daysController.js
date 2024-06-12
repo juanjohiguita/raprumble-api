@@ -55,9 +55,9 @@ export const getCountDaysByCompetition = async (req, res) => {
 };
 
 export const createDay = async (req, res) => {
-    const { idCompetition, numberDay, finish, enable } = req.body;
+    const { idCompetition, numberDay, finish, enable, location } = req.body;
     try {
-        const dayId = await dayService.createDay(idCompetition, numberDay, finish, enable);
+        const dayId = await dayService.createDay(idCompetition, numberDay, finish, enable, location);
         res.status(201).json({ message: "Fecha creado", dayId });
     } catch (error) {
         res.status(500).json({ message: error.message || "Error en el servidor" });
@@ -100,10 +100,10 @@ export const updateDayEnable = async (req, res) => {
 
 export const updateDayAllInformation = async (req, res) => {
     const { id } = req.params;
-    const { idCompetition, numberDay, finish, enable } = req.body;
+    const { idCompetition, numberDay, finish, enable, location } = req.body;
 
     try {
-        const success = await dayService.updateDayAllInformation(id, idCompetition, numberDay, finish, enable);
+        const success = await dayService.updateDayAllInformation(id, idCompetition, numberDay, finish, enable, location);
         if (!success) {
             return res.status(404).json({ message: "Fecha no encontrada" });
         }

@@ -26,8 +26,8 @@ class DaysMiddleware {
     }
 
     validateDayAllUpdateFields(req, res, next) {
-        const { idCompetition, numberDay, finish, enable } = req.body;
-        if (idCompetition == undefined|| numberDay == undefined|| finish == undefined || enable == undefined) {
+        const { idCompetition, numberDay, finish, enable, location } = req.body;
+        if (idCompetition == undefined|| numberDay == undefined|| finish == undefined || enable == undefined || location == undefined) {
             return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
         }
         next();

@@ -3,7 +3,7 @@ import { pool } from "../config/db.js";
 class dayService {
     async getDays() {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, numberDay, finish, enable FROM days");
+            const [rows] = await pool.query("SELECT id, idCompetition, numberDay, finish, enable, location FROM days");
             return rows;
         } catch (error) {
             throw new Error(error.message || "Error fetching days");
@@ -12,7 +12,7 @@ class dayService {
 
     async getDay (id) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, numberDay, finish, enable FROM days WHERE id = ?", [id]);
+            const [rows] = await pool.query("SELECT id, idCompetition, numberDay, finish, enable, location FROM days WHERE id = ?", [id]);
             return rows[0];
         } catch (error) {
             throw new Error(error.message || "Error fetching day");
@@ -22,7 +22,7 @@ class dayService {
 
     async getDayByCompetitionAndNumberDay (idCompetition, numberDay) {
         try {
-            const [rows] = await pool.query("SELECT id, idCompetition, numberDay, finish, enable FROM days WHERE idCompetition = ? AND numberDay = ?", [idCompetition, numberDay]);
+            const [rows] = await pool.query("SELECT id, idCompetition, numberDay, finish, enable, location FROM days WHERE idCompetition = ? AND numberDay = ?", [idCompetition, numberDay]);
             return rows[0];
         } catch (error) {
             throw new Error(error.message || "Error fetching day");
@@ -40,9 +40,9 @@ class dayService {
 
     
 
-    async createDay(idCompetition, numberDay, finish, enable) {
+    async createDay(idCompetition, numberDay, finish, enable, location) {
         try {
-            const [result] = await pool.query("INSERT INTO days (idCompetition, numberDay, finish, enable) VALUES (?, ?, ?, ?)", [idCompetition, numberDay, finish, enable]);
+            const [result] = await pool.query("INSERT INTO days (idCompetition, numberDay, finish, enable, location) VALUES (?, ?, ?, ?, ?)", [idCompetition, numberDay, finish, enable, location]);
             return result.insertId;
         } catch (error) {
             throw new Error(error.message || "Error creating day");
@@ -71,10 +71,10 @@ class dayService {
     }
 
 
-    async updateDayAllInformation(id, idCompetition, numberDay, finish, enable ) {
+    async updateDayAllInformation(id, idCompetition, numberDay, finish, enable, location ) {
         try {
             // Actualizacion de los atributos mediante un update
-            const [result] = await pool.query("UPDATE days SET idCompetition = ?, numberDay = ?, finish = ?, enable = ? WHERE id = ?", [idCompetition, numberDay, finish, enable, id]);
+            const [result] = await pool.query("UPDATE days SET idCompetition = ?, numberDay = ?, finish = ?, enable = ?, location = ? WHERE id = ?", [idCompetition, numberDay, finish, enable,location, id]);
             return result.affectedRows > 0;
         } catch (error) {
             throw new Error(error.message || "Error updating day");
