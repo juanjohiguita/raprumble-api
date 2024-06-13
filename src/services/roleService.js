@@ -21,22 +21,22 @@ class roleService {
 
     async createRole(name, ) {
         try {
-            const [result] = await pool.query("INSERT INTO roles(name) VALUES (?, ?)", [name]);
+            const [result] = await pool.query("INSERT INTO roles(name) VALUES (?)", [name]);
             return result.insertId;
         } catch (error) {
             throw new Error(error.message || "Error creating role");
         }
     }
 
-    async updateRole(id, name) {
+    async updateRoleName(id, name) {
         try {
             const [result] = await pool.query("UPDATE roles SET name = ? WHERE id = ?", [name, id]);
-            console.log(result);
             return result.affectedRows > 0;
         } catch (error) {
             throw new Error(error.message || "Error updating role");
         }
     }
+
 
     async updateRoleAllInformation(id, name) {
         try {

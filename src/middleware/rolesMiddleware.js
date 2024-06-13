@@ -16,16 +16,16 @@ class RolesMiddleware {
     }
 
     validateRoleAllUpdateFields(req, res, next) {
-        const { name, type } = req.body;
-        if (name == undefined || type == undefined) {
+        const { name} = req.body;
+        if (name == undefined) {
             return res.status(400).json({ message: "Se debe proporcionar todos los campos para actualizar" });
         }
         next();
     }
 
     validateRoleUpdateFields(req, res, next) {
-        const { name, type } = req.body;
-        if (!name && !type) {
+        const { name} = req.body;
+        if (!name) {
             return res.status(400).json({ message: "Se debe proporcionar al menos un campo para actualizar" });
         }
         next();

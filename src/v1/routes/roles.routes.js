@@ -1,6 +1,6 @@
 
 import {Router} from 'express';
-import {getRole, getRoles, createRole, deleteRole, updateRoleType, updateRoleAllInformation} from '../../controllers/rolesController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
+import {getRole, getRoles, createRole, deleteRole, updateRoleName, updateRoleAllInformation} from '../../controllers/rolesController.js'; // Importar con llaves significa que se importa una función específica, mientras que sin llaves se importa todo el archivo
 import RolesMiddleware from '../../middleware/rolesMiddleware.js';
 
 const path = 'roles';
@@ -22,7 +22,7 @@ updateRoleAllInformation);
 // El metodo patch permite actualizar solo una parte de los datos
 router.patch(`/${path}/:id`, 
 RolesMiddleware.validateRoleUpdateFields,
-updateRoleType);
+updateRoleName);
 
 
 router.delete(`/${path}/:id`, 

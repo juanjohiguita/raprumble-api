@@ -35,11 +35,11 @@ export const createRole = async (req, res) => {
     }
 };
 
-export const updateRoleType = async (req, res) => {
+export const updateRoleName = async (req, res) => {
     const id = req.params.id;
-    const { type } = req.body;
+    const { name } = req.body;
     try {
-        const success = await roleService.updateRoleType(id, type);
+        const success = await roleService.updateRoleName(id, name);
         if (!success) {
             return res.status(404).json({ message: "role not found" });
         }
